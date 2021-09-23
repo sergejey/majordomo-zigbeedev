@@ -1,0 +1,124 @@
+[#if VIEW_MODE="search_zigbeedevices" || VIEW_MODE=""#]
+<!-- table zwave_devices search -->
+<div class="row">
+    <div class="col-md-9">
+        [#module name="xray" action="service" cycle="zigbeedev"#]
+    </div>
+    <div class="col-md-3 text-right">
+     <a href="?mode=refresh_devices" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i> <#LANG_REFRESH#></a>
+     <a href="#" onClick="$('#api_settings').toggle();return false;" class="btn btn-default"><i class="glyphicon glyphicon-wrench"></i> <#LANG_SETUP#></a>
+    </div>
+</div>
+<div style="display:none" id='api_settings'>
+&nbsp;
+<form action="?" method="post" enctype="multipart/form-data" name="frmEdit" class="form">
+<div class="form-group[#if ERR_MQTT_HOST#] has-error[#endif#]">
+ <label class="control-label">
+ MQTT host:
+ </label>
+ <input type="text" name="mqtt_host" value="[#MQTT_HOST#]" class="form-control">
+</div>
+    <div class="form-group[#if ERR_MQTT_PORT#] has-error[#endif#]">
+        <label class="control-label">
+            MQTT port:
+        </label>
+        <input type="text" name="mqtt_port" value="[#MQTT_PORT#]" class="form-control">
+    </div>
+
+    <div class="form-group[#if ERR_MQTT_QUERY#] has-error[#endif#]">
+        <label class="control-label">
+            MQTT topics:
+        </label>
+        <input type="text" name="mqtt_query" value="[#MQTT_QUERY#]" class="form-control">
+        <div class="help-block">Use "," for multiple topics</div>
+    </div>
+    <div class="form-group>
+        <label class="control-label">
+            Authorization required:
+        </label>
+        <input type="radio" value="1" name="mqtt_auth" [#if MQTT_AUTH="1"#] checked[#endif#]> <#LANG_YES#>
+        <input type="radio" value="0" name="mqtt_auth" [#if MQTT_AUTH!="1"#] checked[#endif#]> <#LANG_NO#>
+    <br/>&nbsp;
+    </div>
+
+<div class="form-group">
+    <label class="control-label">
+        MQTT <#LANG_USERNAME#>:
+    </label>
+    <input type="text" name="mqtt_username" value="[#MQTT_USERNAME#]" class="form-control">
+</div>
+
+<div class="form-group">
+    <label class="control-label">
+        MQTT <#LANG_PASSWORD#>:
+    </label>
+    <input type="password" name="mqtt_password" value="[#MQTT_PASSWORD#]" class="form-control">
+</div>
+
+<div class="form-group">
+<button type="submit" name="subm" value="Submit" class="btn btn-primary"><#LANG_UPDATE#></button>
+<input type="hidden" name="view_mode" value="update_settings">
+<input type="hidden" name="mode" value="update">
+</div>
+</form>
+<hr/>
+</div>
+
+[#endif VIEW_MODE#]
+
+ <!-- action usual -->
+ [#if DATA_SOURCE="zigbeedevices" || DATA_SOURCE=""#]
+ <!-- table zigbeedevices search -->
+ [#if VIEW_MODE="search_zigbeedevices" || VIEW_MODE=""#]
+  [#inc zigbeedevices_search_admin.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table zigbeedevices search -->
+ <!-- table zigbeedevices edit -->
+ [#if VIEW_MODE="edit_zigbeedevices"#]
+<a href="?" class="btn btn-default"><#LANG_BACK#></a>
+   [#if ID!=""#]
+   <h2>[#TITLE#][#if DESCRIPTION!=""#] ([#DESCRIPTION#])[#endif DESCRIPTION#]</h2>
+<ul class="nav nav-tabs">
+  <li[#if TAB=""#] class="active"[#endif#]>
+   <a href="?data_source=<#DATA_SOURCE#>&view_mode=<#VIEW_MODE#>&id=<#ID#>&tab="><#LANG_GENERAL#></a>
+  </li>
+  <li[#if TAB="data"#] class="active"[#endif#]>
+   <a href="?data_source=<#DATA_SOURCE#>&view_mode=<#VIEW_MODE#>&id=<#ID#>&tab=data">&#060#LANG_DATA#&#062</a>
+  </li>
+</ul>
+&nbsp;<br/>
+   [#endif ID#]
+   [#if TAB=""#]
+    [#inc zigbeedevices_edit_default.html#]
+   [#endif TAB#]
+   [#if TAB="data"#]
+    [#inc zigbeedevices_edit_data.html#]
+   [#endif TAB#]
+ [#endif VIEW_MODE#]
+ <!-- / table zigbeedevices edit -->
+ <!-- table zigbeedevices view --> 
+ [#if VIEW_MODE="view_zigbeedevices"#]
+   [#if TAB=""#]
+    [#inc zigbeedevices_view_default.html#]
+   [#endif TAB#]
+ [#endif VIEW_MODE#]
+ <!-- / table zigbeedevices view -->
+ [#endif DATA_SOURCE#]
+ <!-- action usual -->
+ [#if DATA_SOURCE="zigbeeproperties"#]
+ <!-- table zigbeeproperties search -->
+ [#if VIEW_MODE="search_zigbeeproperties" || VIEW_MODE=""#]
+  [#inc zigbeeproperties_search_admin.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table zigbeeproperties search -->
+ <!-- table zigbeeproperties edit -->
+ [#if VIEW_MODE="edit_zigbeeproperties"#]
+   [#inc zigbeeproperties_edit.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table zigbeeproperties edit -->
+ <!-- table zigbeeproperties view --> 
+ [#if VIEW_MODE="view_zigbeeproperties"#]
+   [#inc zigbeeproperties_view.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table zigbeeproperties view -->
+ [#endif DATA_SOURCE#]

@@ -1,0 +1,90 @@
+
+<!-- Table 'zigbeedevices' edit -->
+[#if OK#]
+<div class="alert alert-success"><#LANG_DATA_SAVED#></div>
+[#endif OK#]
+[#if ERR#]
+<div class="alert alert-danger"><#LANG_FILLOUT_REQURED#></div>
+[#endif ERR#]
+
+<script type="text/javascript">
+ let deviceTimer=0;
+ function reloadDeviceData() {
+  let url="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&ajax=1";
+  $.ajax({
+   url: url
+  }).done(function(data) {
+   if (typeof data == 'object') {
+    for(let i=0;i<data.length;i++) {
+     //alert(data[i].TITLE);
+     $('#prop'+data[i].ID+'_value').html(data[i].VALUE);
+     $('#prop'+data[i].ID+'_updated').html(data[i].UPDATED);
+    }
+   }
+   deviceTimer=setTimeout('reloadDeviceData();',2000);
+  });
+ }
+ $(document).ready(function() {
+  deviceTimer=setTimeout('reloadDeviceData();',2000);
+ });
+</script>
+
+<div class="row">
+ <div class="col-md-8">
+  <table class="table table-stripped">
+   <tr>
+    <th><#LANG_TITLE#></th>
+    <th><#LANG_VALUE#></th>
+    <th><#LANG_LINKED_OBJECT#></th>
+    <th><#LANG_UPDATED#></th>
+   </tr>
+   [#begin PROPERTIES#]
+   <tr[#if ID="<#PROP_ID#>"#] class="alert alert-success"[#endif#]>
+    <td><a href="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&prop_id=[#ID#]"><b>[#TITLE#]</b></a></td>
+    <td id="prop[#ID#]_value">[#VALUE#]</td>
+    <td>
+     [#if LINKED_OBJECT!=""#][#LINKED_OBJECT#][#endif#]
+     [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]
+     [#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
+    </td>
+    <td id="prop[#ID#]_updated" nowrap>[#UPDATED#]</td>
+   </tr>
+   [#end PROPERTIES#]
+  </table>
+ </div>
+ <div class="col-md-4">
+  [#if PROP_ID!=""#]
+  <form class="form" action="?" method="post">
+   <h4>[#PROP_TITLE#]</h4>
+   <div class="form-group">
+    <label><#LANG_LINKED_OBJECT#>:</label>
+    <div>
+    <input type="text" id="linked_object" name="linked_object" class="form-control" value="[#PROP_LINKED_OBJECT#]">
+    </div>
+   </div>
+   <div class="form-group">
+    <label><#LANG_PROPERTY#>:</label>
+    <div>
+    <input type="text" id="linked_property" name="linked_property" class="form-control" value="[#PROP_LINKED_PROPERTY#]">
+    </div>
+   </div>
+   <div class="form-group">
+    <label><#LANG_METHOD#>:</label>
+    <div>
+    <input type="text" id="linked_method" name="linked_method" class="form-control" value="[#PROP_LINKED_METHOD#]">
+    </div>
+   </div>
+   [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
+   <div class="form-group">
+    <input type="submit" class="btn btn-default btn-primary" value="<#LANG_SUBMIT#>">
+   </div>
+   <input type="hidden" name="id" value="<#ID#>">
+   <input type="hidden" name="view_mode" value="<#VIEW_MODE#>">
+   <input type="hidden" name="tab" value="<#TAB#>">
+   <input type="hidden" name="prop_id" value="<#PROP_ID#>">
+   <input type="hidden" name="mode" value="update">
+  </form>
+  [#endif PROP_ID#]
+  &nbsp;
+ </div>
+</div>

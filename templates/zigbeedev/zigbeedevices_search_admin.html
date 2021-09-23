@@ -1,0 +1,83 @@
+&nbsp;
+<!-- table zigbeedevices search -->
+<!-- results -->
+[#if RESULT#]
+<!-- paging -->
+<!-- / paging -->
+<!-- search results (list) -->
+<script type="text/javascript">
+ let deviceTimer=0;
+ let totalDevices=0;
+ function reloadDeviceData() {
+  let url="?ajax=1";
+  $.ajax({
+   url: url
+  }).done(function(data) {
+   if (typeof data == 'object') {
+    for(let i=0;i<data.length;i++) {
+     $('#dev'+data[i].ID+'_updated').html(data[i].UPDATED);
+     $('#dev'+data[i].ID+'_data').html(data[i].DATA);
+    }
+    if (totalDevices==0) {
+     totalDevices = data.length;
+    } else {
+     if (totalDevices!=data.length) {
+      let url="?";
+      window.location.href=url;
+     }
+    }
+   }
+   deviceTimer=setTimeout('reloadDeviceData();',2000);
+  });
+ }
+ $(document).ready(function() {
+  deviceTimer=setTimeout('reloadDeviceData();',2000);
+ });
+</script>
+<table  class="table table-striped">
+ <thead>
+ <tr>
+  <th><#LANG_DESCRIPTION#></th>
+  <th><#LANG_TITLE#></th>
+  <th>Model</th>
+  <th><#LANG_DATA#></th>
+  <th><#LANG_UPDATED#></th>
+  <th>&nbsp;</th>
+ </tr>
+ </thead>
+<tbody>
+[#begin RESULT#]
+<tr>
+ <td>
+  <b>[#DESCRIPTION#]</b>
+  [#if IS_HUB="1"#] (HUB)[#endif#]
+ </td>
+ <td>[#TITLE#]</td>
+ <td>
+  [#MODEL_NAME#]
+  [#if VENDOR!=""#]([#VENDOR#])[#endif#]
+ </td>
+ <td id="dev[#ID#]_data">[#DATA#]</td>
+ <td id="dev[#ID#]_updated">
+   [#UPDATED#]
+ </td>
+ <td width="1%" nowrap>
+  <div>
+  [#if "<#ACTION#>"=="admin"#]
+   <a href="?data_source=<#DATA_SOURCE#>&view_mode=edit_zigbeedevices&id=[#ID#]&tab=data" class="btn btn-default" title="Edit"><#LANG_DATA#></a>
+   <a href="?data_source=<#DATA_SOURCE#>&view_mode=edit_zigbeedevices&id=[#ID#]" class="btn btn-default" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+    <a href="?data_source=<#DATA_SOURCE#>&view_mode=delete_zigbeedevices&id=[#ID#]" onClick="return confirm('Are you sure? Please confirm.')" class="btn btn-default" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+  [#endif ACTION#]
+  </div>
+ </td>
+</tr>
+[#end RESULT#]
+</tbody>
+</table>
+<!-- / paging -->
+[#else RESULT#]
+<div class="alert alert-warning">
+<font color="red"><#LANG_NO_RECORDS_FOUND#></font>
+</div>
+[#endif RESULT#]
+<!-- / results -->
