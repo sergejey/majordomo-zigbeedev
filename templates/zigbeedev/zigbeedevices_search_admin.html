@@ -39,7 +39,7 @@
  <tr>
   <th><#LANG_DESCRIPTION#></th>
   <th><#LANG_TITLE#></th>
-  <th>Model</th>
+  <th>Battery</th>
   <th><#LANG_DATA#></th>
   <th><#LANG_UPDATED#></th>
   <th>&nbsp;</th>
@@ -53,9 +53,8 @@
   [#if IS_HUB="1"#] (HUB)[#endif#]
  </td>
  <td>[#TITLE#]</td>
- <td>
-  [#MODEL_NAME#]
-  [#if VENDOR!=""#]([#VENDOR#])[#endif#]
+ <td class="[#BATTERY_WARN#]">
+  [#if IS_BATTERY="1"#][#BATTERY_LEVEL#]%[#endif#]
  </td>
  <td id="dev[#ID#]_data">[#DATA#]</td>
  <td id="dev[#ID#]_updated">

@@ -50,6 +50,15 @@ if ($res[0]['ID']) {
             }
             $res[$i]['DATA'] .= ' = <b>' . $d['VALUE'] . '</b>;<br/>';
         }
+        if ($res[$i]['IS_BATTERY']) {
+            if ($res[$i]['BATTERY_LEVEL']<30) {
+                $res[$i]['BATTERY_WARN']='text-danger';
+            } elseif ($res[$i]['BATTERY_LEVEL']<60) {
+                $res[$i]['BATTERY_WARN']='text-warning';
+            } else {
+                $res[$i]['BATTERY_WARN']='text-success';
+            }
+        }
     }
     if (gr('ajax')) {
         header("Content-type:application/json");

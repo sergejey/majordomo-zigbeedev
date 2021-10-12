@@ -113,6 +113,9 @@ function procmsg($topic, $msg) {
 
     $from_hub = 0;
     $did = $topic;
+
+    if (preg_match('/\/set$/',$topic)) return;
+
     if (!preg_match('/bridge\//',$topic)) {
         global $topics;
         $did = strtolower($did);

@@ -343,7 +343,7 @@ class zigbeedev extends module
             return 0;
         }
 
-        DebMes("$path ($did $hub): $value", 'zigbeedev');
+        //DebMes("$path ($did $hub): $value", 'zigbeedev');
 
         $device=SQLSelectOne("SELECT * FROM zigbeedevices WHERE TITLE='".DBSafe($did)."'");
         if (!$device['ID']) {
@@ -445,8 +445,12 @@ class zigbeedev extends module
             $property = array('TITLE'=>$prop,'DEVICE_ID'=>$device['ID']);
         }
         if (is_bool($value)) {
-            if ($value==false) $value='false';
-            if ($value==true) $value='true';
+            if ($value===false) $value='false';
+            if ($value===true) $value='true';
+        } elseif (is_null($value)) {
+            $value='';
+        } elseif (strlen($value)>255) {
+            $value=substr($value,0,255);
         }
         $property['VALUE']=$value;
         $property['UPDATED']=date('Y-m-d H:i:s');
@@ -475,6 +479,12 @@ class zigbeedev extends module
                 }
             }
         }
+        if ($prop=='battery' && $device['BATTERY_LEVEL']!=$value) {
+            $device['IS_BATTERY']=1;
+            $device['BATTERY_LEVEL']=$value;
+            SQLUpdate('zigbeedevices',$device);
+        }
+
     }
 
     function mqttPublish($topic, $value, $qos = 0, $retain = 0)
@@ -486,7 +496,7 @@ class zigbeedev extends module
         if ($retain) {
             $data['r'] = $retain;
         }
-        DebMes("Publishing to $topic: $value",'zigbeedev_publish');
+        //DebMes("Publishing to $topic: $value",'zigbeedev_publish');
         addToOperationsQueue('zigbeedev_queue', $topic, json_encode($data), true);
         return 1;
 
@@ -575,6 +585,8 @@ class zigbeedev extends module
  zigbeedevices: IEEEADDR varchar(255) NOT NULL DEFAULT ''
  zigbeedevices: DESCRIPTION varchar(255) NOT NULL DEFAULT ''
  zigbeedevices: IS_HUB int(3) unsigned NOT NULL DEFAULT '0'
+ zigbeedevices: IS_BATTERY int(3) unsigned NOT NULL DEFAULT '0'
+ zigbeedevices: BATTERY_LEVEL int(3) unsigned NOT NULL DEFAULT '0'
  zigbeedevices: FULL_PATH varchar(255) NOT NULL DEFAULT ''
  zigbeedevices: MANUFACTURER_ID varchar(100) NOT NULL DEFAULT ''
  zigbeedevices: MODEL varchar(100) NOT NULL DEFAULT ''
