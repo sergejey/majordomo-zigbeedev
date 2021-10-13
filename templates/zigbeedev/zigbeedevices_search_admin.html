@@ -37,6 +37,7 @@
 <table  class="table table-striped">
  <thead>
  <tr>
+  <th></th>
   <th><#LANG_DESCRIPTION#></th>
   <th><#LANG_TITLE#></th>
   <th>Battery</th>
@@ -48,6 +49,9 @@
 <tbody>
 [#begin RESULT#]
 <tr>
+ <td style="vertical-align:middle">
+   <img src="https://www.zigbee2mqtt.io/images/devices/[#MODEL#].jpg" height="30px" onerror="this.src='../img/modules/zigbeedev.png'">
+ </td>
  <td>
   <b>[#DESCRIPTION#]</b>
   [#if IS_HUB="1"#] (HUB)[#endif#]
