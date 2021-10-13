@@ -365,10 +365,17 @@ class zigbeedev extends module
 
         if (preg_match('/^{/', $value)) {
             $ar = json_decode($value, true);
-
+            
             if ($hub && $ar['type']=='devices' && is_array($ar['message'])) {
                 $path = preg_replace('/bridge.+/','',$path);
                 $this->processListOfDevices($path, $ar['message']);
+                return;
+            }
+                
+            if ($hub && is_string($ar['devices']) && !empty($ar['devices'])) {
+                $path = preg_replace('/bridge.+/','',$path);
+                $devices = json_decode($ar['devices'], true);
+                $this->processListOfDevices($path, $devices);
                 return;
             }
             if ($hub && $ar['type']=='device_announce' && is_array($ar['meta'])) {
@@ -414,17 +421,17 @@ class zigbeedev extends module
                 $rec=SQLSelectOne("SELECT * FROM zigbeedevices WHERE TITLE='".$device_data['friendly_name']."'");
             }
 
-            $rec['IEEEADDR']=$device_data['ieeeAddr'];
+            $rec['IEEEADDR']=$device_data['ieeeAddr'] ?? $device_data['ieee_address'];
             $rec['TITLE']=$device_data['friendly_name'];
             if (!$rec['TITLE']) {
                 $rec['TITLE']=$rec['IEADDR'];
             }
             $rec['FULL_PATH']=$device_data['path'];
-            $rec['MANUFACTURER_ID']=$device_data['manufacturerID'];
-            $rec['MODEL']=$device_data['model'];
-            $rec['MODEL_NAME']=$device_data['modelID'];
-            $rec['MODEL_DESCRIPTION']=$device_data['description'];
-            $rec['VENDOR']=$device_data['vendor'];
+            $rec['MANUFACTURER_ID']=$device_data['manufacturerID']??$device_data['manufacturer'];
+            $rec['MODEL']=$device_data['model'] ?? $device_data['definition']['model'];
+            $rec['MODEL_NAME']=$device_data['modelID'] ?? $device_data['model_id'];
+            $rec['MODEL_DESCRIPTION']=$device_data['description'] ?? $device_data['definition']['description'];
+            $rec['VENDOR']=$device_data['vendor'] ?? $device_data['definition']['vendor'];
             if (!$rec['DESCRIPTION']) {
                 $rec['DESCRIPTION']=$rec['MODEL_DESCRIPTION'].' - '.$rec['TITLE'];
             }
