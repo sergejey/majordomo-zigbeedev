@@ -147,6 +147,7 @@ class zigbeedev extends module
         $out['MQTT_USERNAME'] = $this->config['MQTT_USERNAME'];
         $out['MQTT_PASSWORD'] = $this->config['MQTT_PASSWORD'];
         $out['MQTT_AUTH'] = $this->config['MQTT_AUTH'];
+        $out['DEBUG_MODE'] = $this->config['DEBUG_MODE'];
 
         if ($this->view_mode == 'update_settings') {
             $this->config['MQTT_HOST'] = gr('mqtt_host','trim');
@@ -155,6 +156,7 @@ class zigbeedev extends module
             $this->config['MQTT_AUTH'] = gr('mqtt_auth','int');
             $this->config['MQTT_PORT'] = gr('mqtt_port','int');
             $this->config['MQTT_QUERY'] = gr('mqtt_query','trim');
+            $this->config['DEBUG_MODE'] = gr('debug_mode','int');
             $this->saveConfig();
             setGlobal('cycle_zigbeedevControl', 'restart');
             $this->redirect("?");
@@ -343,8 +345,6 @@ class zigbeedev extends module
             return 0;
         }
 
-        //DebMes("$path ($did $hub): $value", 'zigbeedev');
-
         $device=SQLSelectOne("SELECT * FROM zigbeedevices WHERE TITLE='".DBSafe($did)."'");
         if (!$device['ID']) {
             $device=SQLSelectOne("SELECT * FROM zigbeedevices WHERE IEEEADDR='".DBSafe($did)."'");
@@ -365,16 +365,20 @@ class zigbeedev extends module
 
         if (preg_match('/^{/', $value)) {
             $ar = json_decode($value, true);
-            
             if ($hub && $ar['type']=='devices' && is_array($ar['message'])) {
                 $path = preg_replace('/bridge.+/','',$path);
+                if ($this->config['DEBUG_MODE']) {
+                    DebMes($value,'zigbeedev_devices');
+                }
                 $this->processListOfDevices($path, $ar['message']);
                 return;
             }
-                
             if ($hub && is_string($ar['devices']) && !empty($ar['devices'])) {
                 $path = preg_replace('/bridge.+/','',$path);
                 $devices = json_decode($ar['devices'], true);
+                if ($this->config['DEBUG_MODE']) {
+                    DebMes($ar['devices'],'zigbeedev_devices');
+                }
                 $this->processListOfDevices($path, $devices);
                 return;
             }

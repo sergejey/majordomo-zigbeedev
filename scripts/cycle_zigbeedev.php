@@ -114,6 +114,11 @@ function procmsg($topic, $msg) {
     $from_hub = 0;
     $did = $topic;
 
+    global $zigbeedev_module;
+    if ($zigbeedev_module->config['DEBUG_MODE']) {
+        DebMes("$topic :\n$msg", 'zigbeedev');
+    }
+
     if (preg_match('/\/set$/',$topic)) return;
 
     if (!preg_match('/bridge\//',$topic)) {
@@ -146,7 +151,6 @@ function procmsg($topic, $msg) {
     if (function_exists('callAPI')) {
         callAPI('/api/module/zigbeedev','GET',array('topic'=>$topic,'did'=>$did, 'msg'=>$msg,'hub'=>$from_hub));
     } else {
-        global $zigbeedev_module;
         $zigbeedev_module->processMessage($topic, $did, $msg, $from_hub);
     }
 }
