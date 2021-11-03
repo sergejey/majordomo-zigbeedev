@@ -26,10 +26,10 @@ if ($save_qry) {
     $session->data['zigbeedevices_qry'] = $qry;
 }
 if (!$qry) $qry = "1";
-$sortby_zigbeedevices = "DESCRIPTION, ID DESC";
+$sortby_zigbeedevices = "TITLE, ID DESC";
 $out['SORTBY'] = $sortby_zigbeedevices;
 // SEARCH RESULTS
-$res = SQLSelect("SELECT * FROM zigbeedevices WHERE $qry ORDER BY " . $sortby_zigbeedevices);
+$res = SQLSelect("SELECT *, (SELECT VALUE FROM zigbeeproperties WHERE zigbeedevices.ID = zigbeeproperties.DEVICE_ID AND title = 'availability') as availability FROM zigbeedevices WHERE $qry ORDER BY " . $sortby_zigbeedevices);
 if ($res[0]['ID']) {
     //paging($res, 100, $out); // search result paging
     $total = count($res);

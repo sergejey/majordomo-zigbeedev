@@ -40,6 +40,7 @@
   <th></th>
   <th><#LANG_DESCRIPTION#></th>
   <th><#LANG_TITLE#></th>
+  <th>Online</th>
   <th>Battery</th>
   <th><#LANG_DATA#></th>
   <th><#LANG_UPDATED#></th>
@@ -57,6 +58,15 @@
   [#if IS_HUB="1"#] (HUB)[#endif#]
  </td>
  <td>[#TITLE#]</td>
+ <td class="[#availability#]">
+ [#if IS_HUB!="1" && TITLE!="Coordinator"#]
+  [#if availability=='online'#]
+  <span class="label label-success">Online</span>
+  [#else#]
+  <span class="label label-danger">Offline</span>
+  [#endif#]
+ [#endif#]
+ </td>
  <td class="[#BATTERY_WARN#]">
   [#if IS_BATTERY="1"#][#BATTERY_LEVEL#]%[#endif#]
  </td>
