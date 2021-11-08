@@ -149,7 +149,7 @@ function procmsg($topic, $msg) {
     if (!isset($topic) || !isset($msg)) return false;
     echo date("Y-m-d H:i:s") . " Received from {$topic} ($did, $from_hub): $msg\n";
     if (function_exists('callAPI')) {
-        callAPI('/api/module/zigbeedev','GET',array('topic'=>$topic,'did'=>$did, 'msg'=>$msg,'hub'=>$from_hub));
+        callAPI('/api/module/zigbeedev','POST',array('topic'=>$topic,'did'=>$did, 'msg'=>$msg,'hub'=>$from_hub));
     } else {
         $zigbeedev_module->processMessage($topic, $did, $msg, $from_hub);
     }

@@ -61,12 +61,14 @@
  </td>
  <td>[#TITLE#]</td>
  <td class="[#availability#]">
- [#if IS_HUB!="1" && TITLE!="Coordinator"#]
+ [#if IS_HUB!="1" && TITLE!="Coordinator" && availability!=""#]
   [#if availability=='online'#]
   <span class="label label-success">Online</span>
   [#else#]
   <span class="label label-danger">Offline</span>
   [#endif#]
+ [#else#]
+  n/a
  [#endif#]
  </td>
  <td class="[#BATTERY_WARN#]">
