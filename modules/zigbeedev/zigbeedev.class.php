@@ -296,14 +296,18 @@ class zigbeedev extends module
     function setDeviceData($device_id, $property, $data) {
         $device_rec=SQLSelectOne("SELECT * FROM zigbeedevices WHERE ID=".(int)$device_id);
         if ($device_rec['FULL_PATH']) {
-            $this->mqttPublish($device_rec['FULL_PATH'].'/set',json_encode(array($property=>$data)));
+            if ($data[0]=="{")
+                $json = "{\"$property\":$data}";
+            else
+                $json = json_encode(array($property=>$data));
+            $this->mqttPublish($device_rec['FULL_PATH'].'/set',$json);
         }
     }
 
     function propertySetHandle($object, $property, $value)
     {
         $this->getConfig();
-        $properties = SQLSelect("SELECT zigbeeproperties.* FROM zigbeeproperties WHERE LINKED_OBJECT LIKE '" . DBSafe($object) . "' AND LINKED_PROPERTY LIKE '" . DBSafe($property) . "'");
+        $properties = SQLSelect("SELECT zigbeeproperties.* FROM zigbeeproperties WHERE LINKED_OBJECT LIKE '" . DBSafe($object) . "' AND LINKED_PROPERTY LIKE '" . DBSafe($property) . "' AND READ_ONLY <> 1");
         $total = count($properties);
         if ($total) {
             for ($i = 0; $i < $total; $i++) {
@@ -413,6 +417,7 @@ class zigbeedev extends module
 
     function processListOfDevices($path, $data) {
         $total_devices = count($data);
+        DebMes(json_encode($data),'zigbeedev_devices');
         for($i=0;$i<$total_devices;$i++) {
             $device_data=$data[$i];
             if ($device_data['friendly_name']) {
@@ -485,7 +490,7 @@ class zigbeedev extends module
             }
             if ($property['LINKED_PROPERTY']) {
                 $current_value=gg($property['LINKED_OBJECT'].'.'.$property['LINKED_PROPERTY']);
-                if ($current_value!=$new_value) {
+                if ($current_value!=$new_value || $prop=="action") {
                     setGlobal($property['LINKED_OBJECT'].'.'.$property['LINKED_PROPERTY'],$new_value, array($this->name => '0'));
                 }
             }
@@ -613,6 +618,7 @@ class zigbeedev extends module
  zigbeeproperties: LINKED_OBJECT varchar(100) NOT NULL DEFAULT ''
  zigbeeproperties: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
  zigbeeproperties: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
+ zigbeeproperties: READ_ONLY varchar(1) NOT NULL DEFAULT ''
  zigbeeproperties: UPDATED datetime
 EOD;
         parent::dbInstall($data);
