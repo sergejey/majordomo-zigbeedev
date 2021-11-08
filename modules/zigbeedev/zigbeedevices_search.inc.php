@@ -46,6 +46,7 @@ if ($res[0]['ID']) {
                 $res[$i]['DATA'] .= ' (' . $d['LINKED_OBJECT'];
                 if ($d['LINKED_PROPERTY']) $res[$i]['DATA'] .= '.' . $d['LINKED_PROPERTY'];
                 if ($d['LINKED_METHOD']) $res[$i]['DATA'] .= ' &gt; ' . $d['LINKED_METHOD'];
+                if ($d['READ_ONLY']) $res[$i]['DATA'] .= ' [r]';
                 $res[$i]['DATA'] .= ')';
             }
             $res[$i]['DATA'] .= ' = <b>' . $d['VALUE'] . '</b>;<br/>';

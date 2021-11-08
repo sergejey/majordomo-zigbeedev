@@ -46,6 +46,7 @@
      [#if LINKED_OBJECT!=""#][#LINKED_OBJECT#][#endif#]
      [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]
      [#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
+     [#if READ_ONLY=="1"#][r][#endif#]
     </td>
     <td id="prop[#ID#]_updated" nowrap>[#UPDATED#]</td>
    </tr>
@@ -72,6 +73,12 @@
     <label><#LANG_METHOD#>:</label>
     <div>
     <input type="text" id="linked_method" name="linked_method" class="form-control" value="[#PROP_LINKED_METHOD#]">
+    </div>
+   </div>
+   <div class="form-group">
+    <div class="controls">
+      <input type="checkbox" id="read_only" name="read_only" value="1" [#if PROP_READ_ONLY="1"#] checked[#endif#]>
+      <label>Read only</label>
     </div>
    </div>
    [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
