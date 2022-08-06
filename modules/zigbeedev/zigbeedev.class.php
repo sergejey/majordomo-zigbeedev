@@ -205,6 +205,7 @@ class zigbeedev extends module
             $topic = trim($query_list[$i]);
             $topic = preg_replace('/#$/','',$topic);
             $this->mqttPublish($topic.'bridge/config/devices','');
+            $this->mqttPublish($topic.'bridge/request/restart','');
         }
     }
 
@@ -417,7 +418,7 @@ class zigbeedev extends module
 
     function processListOfDevices($path, $data) {
         $total_devices = count($data);
-        DebMes(json_encode($data),'zigbeedev_devices');
+        //DebMes(json_encode($data),'zigbeedev_devices');
         for($i=0;$i<$total_devices;$i++) {
             $device_data=$data[$i];
             if ($device_data['friendly_name']) {
@@ -436,12 +437,12 @@ class zigbeedev extends module
                 $rec['TITLE']=$rec['IEADDR'];
             }
             $rec['FULL_PATH']=$device_data['path'];
-            $rec['MANUFACTURER_ID']=$device_data['manufacturerID']??$device_data['manufacturer'];
-            $rec['MODEL']=$device_data['model'] ?? $device_data['definition']['model'];
-            $rec['MODEL_NAME']=$device_data['modelID'] ?? $device_data['model_id'];
-            $rec['MODEL_DESCRIPTION']=$device_data['description'] ?? $device_data['definition']['description'];
-            $rec['VENDOR']=$device_data['vendor'] ?? $device_data['definition']['vendor'];
-            if (!$rec['DESCRIPTION']) {
+            $rec['MANUFACTURER_ID']=''.($device_data['manufacturerID']?$device_data['manufacturerID']:$device_data['manufacturer']);
+            $rec['MODEL']=''.($device_data['model']?$device_data['model']:$device_data['definition']['model']);
+            $rec['MODEL_NAME']=''.($device_data['modelID']?$device_data['modelID']:$device_data['model_id']);
+            $rec['MODEL_DESCRIPTION']=''.($device_data['description']?$device_data['description']:$device_data['definition']['description']);
+            $rec['VENDOR']=''.($device_data['vendor']?$device_data['vendor']:$device_data['definition']['vendor']);
+            if (!$rec['DESCRIPTION'] || preg_match('/^\-/',trim($rec['DESCRIPTION']))) {
                 $rec['DESCRIPTION']=$rec['MODEL_DESCRIPTION'].' - '.$rec['TITLE'];
             }
             if (!$rec['ID']) {
@@ -450,8 +451,8 @@ class zigbeedev extends module
             } else {
                 SQLUpdate('zigbeedevices',$rec);
             }
-
-            DebMes(json_encode($device_data),'zigbeedev_devices');
+            //DebMes(json_encode($rec,JSON_PRETTY_PRINT),'zigbeedev_devices');
+            //DebMes(json_encode($device_data,JSON_PRETTY_PRINT),'zigbeedev_devices');
         }
     }
 
