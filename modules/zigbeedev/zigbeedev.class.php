@@ -556,6 +556,37 @@ class zigbeedev extends module
         $this->getConfig();
         //to-do
     }
+    
+    function processSubscription($event_name, &$details)
+    {
+        if ($event_name == 'panelBlockRight') {
+            $battery = 0;
+            $availability = 0;
+            $res = SQLSelect("SELECT *, (SELECT VALUE FROM zigbeeproperties WHERE zigbeedevices.ID = zigbeeproperties.DEVICE_ID AND title = 'availability') as availability FROM zigbeedevices");
+            if ($res[0]['ID']) {
+                $total = count($res);
+                for ($i = 0; $i < $total; $i++) {
+                    if ($res[$i]['IS_BATTERY'] =='1' && floatval($res[$i]['BATTERY_LEVEL']) < 15)
+                        $battery += 1;
+                    if ($res[$i]['availability'] == 'offline')
+                        $availability += 1;
+                }
+            }
+            $panel = '<div class="panel panel-default">';
+            $panel .= '<div class="panel-heading"><img src="/img/modules/zigbeedev.png" style="width: 20px;height: 20px;">ZigbeeDev</div>';
+            $panel .= '<div class="panel-body">';
+            if ($battery)
+                $panel .= '<span class="label label-warning" title="Батарея разряжена">Батарея разряжена на '.$battery.' устройствах</span>';
+            if ($availability)
+                $panel .= '<span class="label label-danger" title="Устройства не в сети">'.$availability.' устройств не в сети</span>';
+            if ($availability == 0 && $battery == 0)
+                $panel .= '<span class="label label-success" title="Проблем нет">Проблем не выявлено</span>';
+            $panel .= '</div>';
+            $panel .= '</div>';
+            return $panel;
+            
+        }
+    }
 
     /**
      * Install
@@ -592,6 +623,7 @@ class zigbeedev extends module
      */
     function dbInstall($data)
     {
+        subscribeToEvent($this->name, 'panelBlockRight');
         /*
         zigbeedevices -
         zigbeeproperties -
