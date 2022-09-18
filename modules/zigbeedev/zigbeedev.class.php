@@ -491,7 +491,7 @@ class zigbeedev extends module
             }
             if ($property['LINKED_PROPERTY']) {
                 $current_value=gg($property['LINKED_OBJECT'].'.'.$property['LINKED_PROPERTY']);
-                if ($current_value!=$new_value || $prop=="action") {
+                if ($current_value!=$new_value || $prop=="action" || $property['ONLY_NEW_VALUE']!=1) {
                     setGlobal($property['LINKED_OBJECT'].'.'.$property['LINKED_PROPERTY'],$new_value, array($this->name => '0'));
                 }
             }
