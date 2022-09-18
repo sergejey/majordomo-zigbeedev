@@ -70,6 +70,7 @@ if ($this->tab == 'data') {
                 $properties[$i]['LINKED_PROPERTY']=gr('linked_property','trim');
                 $properties[$i]['LINKED_METHOD']=gr('linked_method','trim');
                 $properties[$i]['READ_ONLY']=gr('read_only','trim');
+                $properties[$i]['ONLY_NEW_VALUE']=gr('only_new_value','trim');
                 SQLUpdate('zigbeeproperties',$properties[$i]);
 
                 if ($old_linked_object && $old_linked_object != $properties[$i]['LINKED_OBJECT'] &&
@@ -101,6 +102,8 @@ if ($this->tab == 'data') {
             $properties[$i]['LINKED_METHOD'] = trim(${'linked_method' . $properties[$i]['ID']});
             global ${'read_only' . $properties[$i]['ID']};
             $properties[$i]['READ_ONLY'] = trim(${'read_only' . $properties[$i]['ID']});
+            global ${'only_new_value' . $properties[$i]['ID']};
+            $properties[$i]['ONLY_NEW_VALUE'] = trim(${'only_new_value' . $properties[$i]['ID']});
             SQLUpdate('zigbeeproperties', $properties[$i]);
             $old_linked_object = $properties[$i]['LINKED_OBJECT'];
             $old_linked_property = $properties[$i]['LINKED_PROPERTY'];
