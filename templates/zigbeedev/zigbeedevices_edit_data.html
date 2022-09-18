@@ -47,6 +47,7 @@
      [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]
      [#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
      [#if READ_ONLY=="1"#][r][#endif#]
+     [#if ONLY_NEW_VALUE=="1"#][nv][#endif#]
     </td>
     <td id="prop[#ID#]_updated" nowrap>[#UPDATED#]</td>
    </tr>
@@ -79,6 +80,9 @@
     <div class="controls">
       <input type="checkbox" id="read_only" name="read_only" value="1" [#if PROP_READ_ONLY="1"#] checked[#endif#]>
       <label>Read only</label>
+      <br>
+	     <input type="checkbox" id="only_new_value" name="only_new_value" value="1" [#if PROP_ONLY_NEW_VALUE="1"#] checked[#endif#]>
+      <label>Save only new  value</label>
     </div>
    </div>
    [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
