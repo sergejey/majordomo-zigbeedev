@@ -620,6 +620,7 @@ class zigbeedev extends module
  zigbeeproperties: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
  zigbeeproperties: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
  zigbeeproperties: READ_ONLY varchar(1) NOT NULL DEFAULT ''
+ zigbeeproperties: ONLY_NEW_VALUE varchar(1) NOT NULL DEFAULT ''
  zigbeeproperties: UPDATED datetime
 EOD;
         parent::dbInstall($data);
