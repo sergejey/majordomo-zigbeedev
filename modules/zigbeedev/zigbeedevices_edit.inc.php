@@ -70,6 +70,7 @@ if ($this->tab == 'data') {
                 $properties[$i]['LINKED_PROPERTY']=gr('linked_property','trim');
                 $properties[$i]['LINKED_METHOD']=gr('linked_method','trim');
                 $properties[$i]['READ_ONLY']=gr('read_only','trim');
+                $properties[$i]['PROCESS_TYPE']=gr('process_type','int');
                 SQLUpdate('zigbeeproperties',$properties[$i]);
 
                 if ($old_linked_object && $old_linked_object != $properties[$i]['LINKED_OBJECT'] &&

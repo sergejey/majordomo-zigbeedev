@@ -75,13 +75,25 @@
     <input type="text" id="linked_method" name="linked_method" class="form-control" value="[#PROP_LINKED_METHOD#]">
     </div>
    </div>
+
+   [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
+
+   <div class="form-group">
+    <label><#LANG_ZIGBEEDEV_PROCESS_TYPE#>:</label>
+    <div class="controls">
+     <label><input type="radio" name="process_type" value="0"[#if PROP_PROCESS_TYPE="0"#] checked[#endif#]> <#LANG_ZIGBEEDEV_PROCESS_TYPE_CHANGED#></label><br/>
+     <label><input type="radio" name="process_type" value="1"[#if PROP_PROCESS_TYPE="1"#] checked[#endif#]> <#LANG_ZIGBEEDEV_PROCESS_TYPE_ANY#></label>
+    </div>
+   </div>
+
    <div class="form-group">
     <div class="controls">
       <input type="checkbox" id="read_only" name="read_only" value="1" [#if PROP_READ_ONLY="1"#] checked[#endif#]>
-      <label>Read only</label>
+      <label><#LANG_READ_ONLY#></label>
     </div>
    </div>
-   [#module name="linkedobject" object_field="linked_object" property_field="linked_property" method_field="linked_method"#]
+
+
    <div class="form-group">
     <input type="submit" class="btn btn-default btn-primary" value="<#LANG_SUBMIT#>">
    </div>

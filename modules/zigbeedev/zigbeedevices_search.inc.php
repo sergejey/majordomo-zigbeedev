@@ -60,6 +60,9 @@ if ($res[0]['ID']) {
                 $res[$i]['BATTERY_WARN']='text-success';
             }
         }
+        if ($res[$i]['MODEL']) {
+            $res[$i]['MODEL']=str_replace('/','-',$res[$i]['MODEL']);
+        }
     }
     if (gr('ajax')) {
         header("Content-type:application/json");
