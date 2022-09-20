@@ -486,9 +486,9 @@ class zigbeedev extends module
         if ($property['LINKED_OBJECT']) {
 
             $value = strtolower($value);
-            if ($value == 'false' || $value == 'off' || $value == 'no' || $value == 'open') {
+            if ($value == 'false' || $value == 'off' || $value == 'no' || $value == 'open' || $value=='offline') {
                 $new_value = 0;
-            } elseif ($value == 'true' || $value == 'on' || $value == 'yes' || $value == 'close') {
+            } elseif ($value == 'true' || $value == 'on' || $value == 'yes' || $value == 'close' || $value=='online') {
                 $new_value = 1;
             } else {
                 $new_value = $value;
