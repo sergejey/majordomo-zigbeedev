@@ -7,6 +7,13 @@
 <div class="alert alert-danger"><#LANG_FILLOUT_REQURED#></div>
 [#endif ERR#]
 
+<style>
+div.hint {
+  display:inline-block;
+  cursor: help;
+}
+</style>
+
 <script type="text/javascript">
  let deviceTimer=0;
  function reloadDeviceData() {
@@ -46,7 +53,8 @@
      [#if LINKED_OBJECT!=""#][#LINKED_OBJECT#][#endif#]
      [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]
      [#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
-     [#if READ_ONLY=="1"#][r][#endif#]
+     [#if READ_ONLY=="1"#]<div class="hint" title="<#LANG_READ_ONLY#>">[r]</div>[#endif#]
+     [#if PROCESS_TYPE=="1"#]<div class="hint" title="<#LANG_ZIGBEEDEV_PROCESS_TYPE_ANY#>">[a]</div>[#endif#]
     </td>
     <td id="prop[#ID#]_updated" nowrap>[#UPDATED#]</td>
    </tr>
