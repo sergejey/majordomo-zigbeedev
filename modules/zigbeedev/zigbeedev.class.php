@@ -499,7 +499,9 @@ class zigbeedev extends module
                     setGlobal($property['LINKED_OBJECT'] . '.' . $property['LINKED_PROPERTY'], $new_value, array($this->name => '0'));
                 }
                 if ($property['LINKED_METHOD']) {
-                    callMethod($property['LINKED_OBJECT'] . '.' . $property['LINKED_METHOD'], array('VALUE' => $new_value, 'NEW_VALUE' => $new_value));
+                    callMethod($property['LINKED_OBJECT'] . '.' . $property['LINKED_METHOD'], array(
+					'VALUE' => $new_value, 'NEW_VALUE' => $new_value, 'TITLE' => $prop
+					));
                 }
             }
         }
