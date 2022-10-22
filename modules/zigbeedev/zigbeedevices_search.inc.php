@@ -26,7 +26,46 @@ if ($save_qry) {
     $session->data['zigbeedevices_qry'] = $qry;
 }
 if (!$qry) $qry = "1";
-$sortby_zigbeedevices = "TITLE, ID DESC";
+
+$search = gr('search');
+if ($search) {
+    $qry.=" AND (TITLE LIKE '%".DbSafe($search)."%' OR DESCRIPTION LIKE '%".DbSafe($search)."%' OR MODEL_NAME LIKE '%".DbSafe($search)."%')";
+    $out['SEARCH']=htmlspecialchars($search);
+    $out['SEARCH_URL']=urlencode($search);
+}
+
+$sort_type=gr('sort_type');
+if ($sort_type) {
+    setcookie('zigbeedev_sort_type',$sort_type);
+} else {
+    $sort_type = $_COOKIE['zigbeedev_sort_type'];
+}
+if (!$sort_type) $sort_type='title';
+$out['SORT_TYPE']=$sort_type;
+
+$sort_dir=gr('sort_dir');
+if ($sort_dir) {
+    setcookie('zigbeedev_sort_dir',$sort_dir);
+} else {
+    $sort_dir = $_COOKIE['zigbeedev_sort_dir'];
+}
+$out['SORT_DIR']=$sort_dir;
+
+$sortby_zigbeedevices = "TITLE";
+if ($sort_type=='battery') {
+    $sortby_zigbeedevices = "BATTERY_LEVEL";
+} elseif ($sort_type=='model') {
+    $sortby_zigbeedevices = "MODEL_NAME";
+} elseif ($sort_type=='description') {
+    $sortby_zigbeedevices = "DESCRIPTION";
+} elseif ($sort_type=='updated') {
+    $sortby_zigbeedevices = "UPDATED";
+}
+
+if ($sort_dir=='desc') {
+    $sortby_zigbeedevices.=" DESC";
+}
+
 $out['SORTBY'] = $sortby_zigbeedevices;
 // SEARCH RESULTS
 $res = SQLSelect("SELECT *, (SELECT VALUE FROM zigbeeproperties WHERE zigbeedevices.ID = zigbeeproperties.DEVICE_ID AND title = 'availability') as availability FROM zigbeedevices WHERE $qry ORDER BY " . $sortby_zigbeedevices);

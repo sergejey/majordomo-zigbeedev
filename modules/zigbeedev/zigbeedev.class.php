@@ -372,6 +372,8 @@ class zigbeedev extends module
             $device['ID'] = SQLInsert('zigbeedevices', $device);
         } else {
             $device['UPDATED'] = date('Y-m-d H:i:s');
+            $device['FULL_PATH'] = $path;
+            $device['FULL_PATH'] = preg_replace('/\/bridge.+/', '', $device['FULL_PATH']);
             SQLUpdate('zigbeedevices', $device);
         }
 

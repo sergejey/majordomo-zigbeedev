@@ -1,12 +1,23 @@
 [#if VIEW_MODE="search_zigbeedevices" || VIEW_MODE=""#]
 <!-- table zwave_devices search -->
 <div class="row">
-    <div class="col-md-9">
-        [#module name="xray" action="service" cycle="zigbeedev"#]
+    <div class="col-md-3">
+        <form action="?" method="get" class="form form-inline">
+            <div class="form-group">
+            <input type="text" name="search" placeholder="<#LANG_SEARCH#>" value="[#SEARCH#]" class="form-control">
+            </div>
+            <div class="form-group">
+            <input type="submit" class="btn btn-default btn-primary" value="<#LANG_SEARCH#>">
+            </div>
+        </form>
     </div>
-    <div class="col-md-3 text-right">
-     <a href="?mode=refresh_devices" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i> <#LANG_REFRESH#></a>
-     <a href="#" onClick="$('#api_settings').toggle();return false;" class="btn btn-default"><i class="glyphicon glyphicon-wrench"></i> <#LANG_SETUP#></a>
+    <div class="col-md-3">
+        <a href="?mode=refresh_devices" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i> <#LANG_REFRESH#></a>
+        <a href="#" onClick="$('#api_settings').toggle();return false;" class="btn btn-default"><i class="glyphicon glyphicon-wrench"></i> <#LANG_SETUP#></a>
+    </div>
+
+    <div class="col-md-6">
+        [#module name="xray" action="service" cycle="zigbeedev"#]
     </div>
 </div>
 <div style="display:none" id='api_settings'>

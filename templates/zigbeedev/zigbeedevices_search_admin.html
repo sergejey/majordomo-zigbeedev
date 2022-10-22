@@ -9,7 +9,7 @@
  let deviceTimer=0;
  let totalDevices=0;
  function reloadDeviceData() {
-  let url="?ajax=1";
+  let url="?ajax=1&search=[#SEARCH_URL#]";
   $.ajax({
    url: url
   }).done(function(data) {
@@ -22,7 +22,7 @@
      totalDevices = data.length;
     } else {
      if (totalDevices!=data.length) {
-      let url="?";
+      let url="?search=[#SEARCH_URL#]";
       window.location.href=url;
      }
     }
@@ -38,12 +38,23 @@
  <thead>
  <tr>
   <th></th>
-  <th><#LANG_DESCRIPTION#></th>
-  <th><#LANG_TITLE#></th>
+  <th nowrap><a href="?search=[#SEARCH_URL#]&sort_type=description&&sort_dir=[#if SORT_TYPE="description" && SORT_DIR!="desc"#]desc[#else#]asc[#endif#]"><#LANG_DESCRIPTION#></a>
+   [#if SORT_TYPE="description"#][#if SORT_DIR="desc"#]&darr;[#else#]&uarr;[#endif#][#endif#]
+  </th>
+  <th nowrap><a href="?search=[#SEARCH_URL#]&sort_type=title&&sort_dir=[#if SORT_TYPE="title" && SORT_DIR!="desc"#]desc[#else#]asc[#endif#]"><#LANG_TITLE#></a>
+   [#if SORT_TYPE="title"#][#if SORT_DIR="desc"#]&darr;[#else#]&uarr;[#endif#][#endif#]
+  </th>
+  <th nowrap><a href="?search=[#SEARCH_URL#]&sort_type=model&&sort_dir=[#if SORT_TYPE="model" && SORT_DIR!="desc"#]desc[#else#]asc[#endif#]">Model name</a>
+   [#if SORT_TYPE="model"#][#if SORT_DIR="desc"#]&darr;[#else#]&uarr;[#endif#][#endif#]
+  </th>
   <th>Online</th>
-  <th>Battery</th>
+  <th nowrap><a href="?search=[#SEARCH_URL#]&sort_type=battery&&sort_dir=[#if SORT_TYPE="battery" && SORT_DIR!="desc"#]desc[#else#]asc[#endif#]">Battery</a>
+   [#if SORT_TYPE="battery"#][#if SORT_DIR="desc"#]&darr;[#else#]&uarr;[#endif#][#endif#]
+  </th>
   <th><#LANG_DATA#></th>
-  <th><#LANG_UPDATED#></th>
+  <th nowrap><a href="?search=[#SEARCH_URL#]&sort_type=updated&&sort_dir=[#if SORT_TYPE="updated" && SORT_DIR!="desc"#]desc[#else#]asc[#endif#]"><#LANG_UPDATED#></a>
+   [#if SORT_TYPE="updated"#][#if SORT_DIR="desc"#]&darr;[#else#]&uarr;[#endif#][#endif#]
+  </th>
   <th>&nbsp;</th>
  </tr>
  </thead>
@@ -51,7 +62,7 @@
 [#begin RESULT#]
 <tr>
  <td style="vertical-align:middle">
-   <a href="https://www.zigbee2mqtt.io/devices/[#MODEL#].html" target="_blank">
+  [#if MODEL!=""#]<a href="https://www.zigbee2mqtt.io/devices/[#MODEL#].html" target="_blank">[#endif#]
    <img src="https://www.zigbee2mqtt.io/images/devices/[#MODEL#].jpg" height="30px" onerror="this.src='../img/modules/zigbeedev.png'" style="mix-blend-mode: multiply;">
    </a>
  </td>
@@ -60,6 +71,7 @@
   [#if IS_HUB="1"#] (HUB)[#endif#]
  </td>
  <td>[#TITLE#]</td>
+ <td>[#MODEL_NAME#]</td>
  <td class="[#availability#]">
  [#if IS_HUB!="1" && TITLE!="Coordinator" && availability!=""#]
   [#if availability=='online'#]
@@ -71,7 +83,7 @@
   n/a
  [#endif#]
  </td>
- <td class="[#BATTERY_WARN#]">
+   <td class="[#BATTERY_WARN#]">
   [#if IS_BATTERY="1"#][#BATTERY_LEVEL#]%[#endif#]
  </td>
  <td id="dev[#ID#]_data">[#DATA#]</td>
