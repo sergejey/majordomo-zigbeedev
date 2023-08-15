@@ -62,6 +62,41 @@ div.hint {
   </table>
  </div>
  <div class="col-md-4">
+
+
+  [#if SIMPLE_DEVICE_ID!=""#]
+  <div>
+  [#module name="devices" id="<#SIMPLE_DEVICE_ID#>"#]
+  </div>
+  <a href="<#ROOTHTML#>panel/devices/<#SIMPLE_DEVICE_ID#>.html?tab=settings" class="btn btn-default"><#LANG_DEVICE#> / <#LANG_SECTION_SETTINGS#></a>
+  [#endif#]
+
+
+  [#if CAN_CREATE_DEVICE="1"#]
+  <p>
+  <a href="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&mode=create_device" class="btn btn-default btn-primary"><#LANG_DEVICE#>: <#LANG_DEVICES_ADD_OBJECT_AUTOMATICALLY#></a>
+  </p>
+
+   [#if DEVICES_TO_LINK#]
+  <p>&nbsp;</p>
+   <p><#LANG_DEVICES_CHOOSE_EXISTING#></p>
+   <form class="form" action="?" method="post">
+    <select name="device_id" class="form-control">
+     <option value="0"></option>
+     [#begin DEVICES_TO_LINK#]
+     <option value="[#ID#]">[#TITLE#]</option>
+     [#end DEVICES_TO_LINK#]
+    </select><br/>
+    <input type="submit" value="<#LANG_ADD#>" class="btn btn-default">
+    <input type="hidden" name="id" value="<#ID#>">
+    <input type="hidden" name="view_mode" value="<#VIEW_MODE#>">
+    <input type="hidden" name="tab" value="<#TAB#>">
+    <input type="hidden" name="prop_id" value="<#PROP_ID#>">
+    <input type="hidden" name="mode" value="link_device">
+   </form>
+   [#endif#]
+  [#endif CAN_CREATE#]
+
   [#if PROP_ID!=""#]
   <form class="form" action="?" method="post">
    <h4>[#PROP_TITLE#]</h4>
