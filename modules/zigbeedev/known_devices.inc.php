@@ -65,8 +65,9 @@ $models = array(
                 'batteryOperated' => 1,
             )
         )
-
     ),
+
+    'lumi.sensor_ht' => 'lumi.weather',           // Xiaomi temp sensor WSDCGQ01LM
 
     'lumi.sen_ill.mgl01' => array(                  // MiJia light sensor GZCGQ01LM
         'sensor_light' => array(
@@ -88,6 +89,18 @@ $models = array(
             ),
         )
     ),
+
+    'lumi.plug' => 'TS0001',                        //Xiaomi ZNCZ02LM
+    'TS011F' => 'TS0001',                           // Sonoff TS011F
+
+    'TS0601' => array(                              // TS0601 Smoke sensor
+        'smoke' => array(
+            'properties' => array(
+                'smoke' => 'status',
+            ),
+        ),
+    ),
+
 
     'LED2002G5' => array(                             // TRADFRI bulb E14 WS globe opal 470lm
         'dimmer' => array(
