@@ -14,6 +14,21 @@ $models = array(
     ),
     'E1525/E1745' => 'lumi.sensor_motion',            // TRADFRI motion sensor
     'lumi.sensor_motion.aq2' => 'lumi.sensor_motion', // Aqara RTCGQ11LM
+    'SNZB-03' => 'lumi.sensor_motion',                // Sonoff Motion MS01
+
+    'lumi.sensor_switch' => array(                    // XIAOMI button WXKG01LM
+        'button' => array(
+            'properties' => array(
+                'battery' => 'batteryLevel',
+            ),
+            'methods' => array(
+                'action:single' => 'pressed',
+            ),
+            'settings' => array(
+                'batteryOperated' => 1,
+            )
+        )
+    ),
 
     'lumi.sensor_magnet' => array(                    // Xiaomi door sensor MCCGQ01LM
         'openclose' => array(
@@ -102,6 +117,6 @@ $models = array(
                 'batteryOperated' => 1,
             )
         )
-    )
+    ),
 
 );

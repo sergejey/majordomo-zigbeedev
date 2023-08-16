@@ -80,6 +80,7 @@
     </label>
     <input type="radio" name="create_devices_automatically" value="1"[#if CREATE_DEVICES_AUTOMATICALLY="1"#] checked[#endif#]> <#LANG_YES#>
     <input type="radio" name="create_devices_automatically" value="0"[#if CREATE_DEVICES_AUTOMATICALLY!="1"#] checked[#endif#]> <#LANG_NO#>
+    (<a href="?view_mode=list_unsupported">check for unsupported devices</a>)
 </div>
 
 <div class="form-group">
@@ -149,3 +150,7 @@
  [#endif VIEW_MODE#]
  <!-- / table zigbeeproperties view -->
  [#endif DATA_SOURCE#]
+
+[#if VIEW_MODE="list_unsupported"#]
+[#inc list_unsupported.html#]
+[#endif VIEW_MODE#]

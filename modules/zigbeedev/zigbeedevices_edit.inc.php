@@ -80,16 +80,21 @@ if ($this->tab == 'data') {
                 $out['DEVICES_TO_LINK'] = $devices;
             }
         } else {
-            foreach($properties as $prop) {
-                if ($prop['LINKED_OBJECT']!='') {
-                    $sdevice = SQLSelectOne("SELECT ID, LINKED_OBJECT FROM devices WHERE LINKED_OBJECT='".$prop['LINKED_OBJECT']."'");
+            $seen_objects = array();
+            $linked_devices = array();
+            foreach ($properties as $prop) {
+                if ($prop['LINKED_OBJECT'] != '' && !isset($seen_objects[$prop['LINKED_OBJECT']])) {
+                    $seen_objects[$prop['LINKED_OBJECT']] = 1;
+                    $sdevice = SQLSelectOne("SELECT ID, LINKED_OBJECT FROM devices WHERE LINKED_OBJECT='" . $prop['LINKED_OBJECT'] . "'");
                     if (isset($sdevice['ID'])) {
-                        $out['SIMPLE_DEVICE_ID']=$sdevice['ID'];
-                        $out['SIMPLE_DEVICE_LINKED_OBJECT']=$sdevice['LINKED_OBJECT'];
-                        break;
+                        $linked_devices[]=array('ID'=>$sdevice['ID']);
+                        //$out['SIMPLE_DEVICE_ID'] = $sdevice['ID'];
+                        //$out['SIMPLE_DEVICE_LINKED_OBJECT'] = $sdevice['LINKED_OBJECT'];
                     }
-
                 }
+            }
+            if (count($linked_devices)>0) {
+                $out['LINKED_DEVICES'] = $linked_devices;
             }
         }
     }

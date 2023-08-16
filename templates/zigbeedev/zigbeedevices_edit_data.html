@@ -64,11 +64,13 @@ div.hint {
  <div class="col-md-4">
 
 
-  [#if SIMPLE_DEVICE_ID!=""#]
+  [#if LINKED_DEVICES#]
+  [#begin LINKED_DEVICES#]
   <div>
-  [#module name="devices" id="<#SIMPLE_DEVICE_ID#>"#]
+  [#module name="devices" id="<#LINKED_DEVICES.ID#>"#]
   </div>
-  <a href="<#ROOTHTML#>panel/devices/<#SIMPLE_DEVICE_ID#>.html?tab=settings" class="btn btn-default"><#LANG_DEVICE#> / <#LANG_SECTION_SETTINGS#></a>
+  <a href="<#ROOTHTML#>panel/devices/<#LINKED_DEVICES.ID#>.html?tab=settings" class="btn btn-default"><#LANG_DEVICE#> / <#LANG_SECTION_SETTINGS#></a>
+  [#end LINKED_DEVICES#]
   [#endif#]
 
 

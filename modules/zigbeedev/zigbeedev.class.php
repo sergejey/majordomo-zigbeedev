@@ -191,9 +191,56 @@ class zigbeedev extends module
             }
         }
 
+        if ($this->view_mode=='list_unsupported') {
+            $this->listUnsupportedDevices($out);
+        }
+
         if ($this->mode == 'refresh_devices') {
             $this->refreshDevices();
             $this->redirect("?ok=1");
+        }
+
+    }
+
+    function listUnsupportedDevices(&$out) {
+        $devices = SQLSelect("SELECT ID, MODEL, MODEL_NAME FROM zigbeedevices ORDER BY MODEL_NAME, TITLE");
+        $res_devices = array();
+        $total = count($devices);
+        $seen = array();
+        for($i=0;$i<$total;$i++) {
+            $device = $devices[$i];
+            if (trim($device['MODEL'])=='' && trim($device['MODEL_NAME'])=='') continue;
+            if ($device['MODEL']!='') {
+                if (isset($seen[$device['MODEL']])) continue;
+                $seen[$device['MODEL']] = 1;
+            }
+            if ($device['MODEL_NAME']!='') {
+                if (isset($seen[$device['MODEL_NAME']])) continue;
+                $seen[$device['MODEL_NAME']] = 1;
+            }
+            $supported = $this->checkDeviceType($device['ID']);
+            if (!$supported) {
+                $properties = SQLSelect("SELECT TITLE, VALUE, LINKED_OBJECT, LINKED_PROPERTY, LINKED_METHOD FROM zigbeeproperties WHERE DEVICE_ID=".$device['ID']);
+                $total_p = count($properties);
+                for($ip=0;$ip<$total_p;$ip++) {
+                    if ($properties[$ip]['LINKED_OBJECT']!='') {
+                        $sdevice = SQLSelectOne("SELECT ID, TYPE FROM devices WHERE LINKED_OBJECT='".$properties[$ip]['LINKED_OBJECT']."'");
+                        if (isset($sdevice['TYPE'])) {
+                            $properties[$ip]['LINKED_OBJECT'].=' (device type: '.$sdevice['TYPE'].')';
+                        }
+                    }
+                    foreach($properties[$ip] as $k=>$v) {
+                        if ($v==="") unset($properties[$ip][$k]);
+                    }
+                }
+                $device['PROPERTIES']=$properties;
+                unset($device['ID']);
+                $res_devices[]=$device;
+            }
+
+        }
+        if (count($res_devices)>0) {
+            $out['DETAILS'] = json_encode($res_devices,JSON_PRETTY_PRINT);
         }
 
     }

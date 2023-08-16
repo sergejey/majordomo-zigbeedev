@@ -1,0 +1,15 @@
+<p>
+<a href="?" class="btn btn-default"><#LANG_BACK#></a>
+</p>
+[#if DETAILS!=""#]
+<p>
+    Support of some devices can be improved and you can help by sending details below to the author
+    (<a href="https://github.com/sergejey/majordomo-zigbeedev" target="_blank">GitHub</a>,
+    <a href="https://t.me/MajorDoMoRu" target="_blank">Telegram</a>).<br>
+</p>
+<p>    Hit below to copy data.</p>
+
+<textarea class="form-control" rows="10" onclick="this.focus();this.select();document.execCommand('copy');alert('Text copied to clipboard.');" readonly="true">[#DETAILS#]</textarea>
+[#else DETAILS#]
+<div class="alert alert-success">All devices found should be fully supported.</div>
+[#endif DETAILS#]
