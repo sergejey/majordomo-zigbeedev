@@ -29,6 +29,21 @@ $models = array(
             )
         )
     ),
+    'lumi.remote.b1acn01' => 'lumi.sensor_switch',   // Aqara button
+
+    'lumi.sensor_cube.aqgl01' => array(              // Xiaomi Cube
+        'button' => array(
+            'properties' => array(
+                'battery' => 'batteryLevel',
+            ),
+            'methods' => array(
+                'action:tap' => 'pressed',
+            ),
+            'settings' => array(
+                'batteryOperated' => 1,
+            )
+        )
+    ),
 
     'lumi.sensor_magnet' => array(                    // Xiaomi door sensor MCCGQ01LM
         'openclose' => array(
@@ -41,6 +56,7 @@ $models = array(
             )
         )
     ),
+    'lumi.sensor_magnet.aq2' => 'lumi.sensor_magnet',  // Aqara magnet sensor
 
     'lumi.sensor_wleak.aq1' => array(                 // Aqara SJCGQ11LM
         'leak' => array(
