@@ -16,6 +16,22 @@ $models = array(
     'lumi.sensor_motion.aq2' => 'lumi.sensor_motion', // Aqara RTCGQ11LM
     'SNZB-03' => 'lumi.sensor_motion',                // Sonoff Motion MS01
 
+    'ZY-M100-24G' => array(                           //24G MmWave radar human presence motion sensor
+        'motion' => array(
+            'properties' => array(
+                'presence' => 'status',
+            )
+        ),
+        'sensor_light' => array(
+            'properties' => array(
+                'illuminance_lux' => 'value',
+            ),
+            'settings' => array(
+                'unit' => 'lux',
+            )
+        )
+    ),
+
     'lumi.sensor_switch' => array(                    // XIAOMI button WXKG01LM
         'button' => array(
             'properties' => array(
