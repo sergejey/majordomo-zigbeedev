@@ -15,8 +15,25 @@ div.hint {
 </style>
 
 <script type="text/javascript">
+
+ function setNewData(property_id) {
+  let url="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&prop_id="+property_id+"&mode=set";
+  let old_value = $('#prop'+property_id+'_value').text();
+  let new_value = prompt('<#LANG_VALUE#>:',old_value);
+  if (new_value) {
+   url += "&value="+encodeURIComponent(new_value);
+   $.ajax({
+    url: url
+   }).done(function(data) {
+    reloadDeviceData();
+   });
+  }
+  return false;
+ }
+
  let deviceTimer=0;
  function reloadDeviceData() {
+  clearTimeout(deviceTimer);
   let url="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&ajax=1";
   $.ajax({
    url: url
@@ -42,6 +59,7 @@ div.hint {
    <tr>
     <th><#LANG_TITLE#></th>
     <th><#LANG_VALUE#></th>
+    <th>&nbsp;</th>
     <th><#LANG_LINKED_OBJECT#></th>
     <th><#LANG_UPDATED#></th>
    </tr>
@@ -49,6 +67,7 @@ div.hint {
    <tr[#if ID="<#PROP_ID#>"#] class="alert alert-success"[#endif#]>
     <td><a href="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&prop_id=[#ID#]"><b>[#TITLE#]</b></a></td>
     <td id="prop[#ID#]_value">[#VALUE#]</td>
+    <td><a href="#" onclick="return setNewData([#ID#]);"><span class="glyphicon glyphicon-edit"></span></a></td>
     <td>
      [#if LINKED_OBJECT!=""#][#LINKED_OBJECT#][#endif#]
      [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]

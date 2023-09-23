@@ -87,13 +87,13 @@ if ($this->tab == 'data') {
                     $seen_objects[$prop['LINKED_OBJECT']] = 1;
                     $sdevice = SQLSelectOne("SELECT ID, LINKED_OBJECT FROM devices WHERE LINKED_OBJECT='" . $prop['LINKED_OBJECT'] . "'");
                     if (isset($sdevice['ID'])) {
-                        $linked_devices[]=array('ID'=>$sdevice['ID']);
+                        $linked_devices[] = array('ID' => $sdevice['ID']);
                         //$out['SIMPLE_DEVICE_ID'] = $sdevice['ID'];
                         //$out['SIMPLE_DEVICE_LINKED_OBJECT'] = $sdevice['LINKED_OBJECT'];
                     }
                 }
             }
-            if (count($linked_devices)>0) {
+            if (count($linked_devices) > 0) {
                 $out['LINKED_DEVICES'] = $linked_devices;
             }
         }
@@ -102,6 +102,11 @@ if ($this->tab == 'data') {
     for ($i = 0; $i < $total; $i++) {
         if ($properties[$i]['ID'] == $new_id) continue;
         if ($properties[$i]['ID'] == $prop_id) {
+            if ($this->mode == 'set') {
+                $new_value = gr('value');
+                $this->setDeviceData($properties[$i]['DEVICE_ID'], $properties[$i]['TITLE'], $new_value);
+                $this->processData($rec, $properties[$i]['TITLE'], $new_value);
+            }
             if ($this->mode == 'update') {
 
                 $old_linked_object = $properties[$i]['LINKED_OBJECT'];
