@@ -557,7 +557,7 @@ class zigbeedev extends module
         } else {
             $device['UPDATED'] = date('Y-m-d H:i:s');
             $device['FULL_PATH'] = $path;
-            $device['FULL_PATH'] = preg_replace('/\/bridge.+/', '', $device['FULL_PATH']);
+            $device['FULL_PATH'] = preg_replace('/\/bridge.+|\/availability$/', '', $device['FULL_PATH']);
             SQLUpdate('zigbeedevices', $device);
         }
 
