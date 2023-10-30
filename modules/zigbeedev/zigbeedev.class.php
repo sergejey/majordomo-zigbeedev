@@ -599,16 +599,12 @@ class zigbeedev extends module
                     }
                 }
             }
-            $prop = SQLSelect("SELECT * FROM zigbeeproperties WHERE DEVICE_ID=" . $device['ID']);
-            foreach($prop as $property){
-                $properties[$property['TITLE']] = $property;
-            }
             foreach ($ar as $k => $v) {
                 if (is_array($v)) $v = json_encode($v);
                 if ($k == 'action') {
-                    $this->processData($device, 'action:' . $v, date('Y-m-d H:i:s'), $properties);
+                    $this->processData($device, 'action:' . $v, date('Y-m-d H:i:s'));
                 }
-                $this->processData($device, $k, $v, $properties);
+                $this->processData($device, $k, $v);
             }
         }
     }
@@ -657,9 +653,9 @@ class zigbeedev extends module
         }
     }
 
-    function processData(&$device, $prop, $value, properties='')
+    function processData(&$device, $prop, $value)
     {
-        $property = $properties[$prop];
+        $property = SQLSelectOne("SELECT * FROM zigbeeproperties WHERE TITLE='" . DBSafe($prop) . "' AND DEVICE_ID=" . $device['ID']);
         if (!$property['ID']) {
             $property = array('TITLE' => $prop, 'DEVICE_ID' => $device['ID']);
         }
@@ -677,9 +673,7 @@ class zigbeedev extends module
         if (!$property['ID']) {
             $property['ID'] = SQLInsert('zigbeeproperties', $property);
         } else {
-            if($property['PROCESS_TYPE'] == 1 || ($property['PROCESS_TYPE'] == 0 && $value != $old_value)){
-                SQLUpdate('zigbeeproperties', $property);
-            }
+            SQLUpdate('zigbeeproperties', $property);
         }
 
         if ($property['LINKED_OBJECT']) {
