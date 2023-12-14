@@ -136,7 +136,7 @@ if ($this->tab == 'data') {
     $out['PROPERTIES'] = $properties;
     if (gr('ajax')) {
         header("Content-type:application/json");
-        echo json_encode($properties);
+        echo json_encode($properties,JSON_NUMERIC_CHECK);
         exit;
     }
 }
