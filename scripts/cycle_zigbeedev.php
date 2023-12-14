@@ -131,14 +131,14 @@ function procmsg($topic, $msg) {
         }
         if (!preg_match('/^{/',$msg) && preg_match('/\/(.+)$/',$did,$m)) {
             $prop=$m[1];
-            $msg = json_encode(array($prop=>$msg));
+            $msg = json_encode(array($prop=>$msg),JSON_NUMERIC_CHECK);
         }
         $did = preg_replace('/\/.+/','',$did);
     } else {
         $from_hub = 1;
         if (!preg_match('/^{/',$msg) && preg_match('/\/(\w+)$/',$did,$m)) {
             $prop=$m[1];
-            $msg = json_encode(array($prop=>$msg));
+            $msg = json_encode(array($prop=>$msg),JSON_NUMERIC_CHECK);
         }
         $did = preg_replace('/\/bridge.+/','',$did);
     }
