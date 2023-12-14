@@ -106,7 +106,7 @@ if ($res[0]['ID']) {
     }
     if (gr('ajax')) {
         header("Content-type:application/json");
-        echo json_encode($res);
+        echo json_encode($res,JSON_NUMERIC_CHECK);
         exit;
     }
     $out['RESULT'] = $res;
