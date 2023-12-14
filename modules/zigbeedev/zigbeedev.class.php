@@ -240,7 +240,7 @@ class zigbeedev extends module
 
         }
         if (count($res_devices)>0) {
-            $out['DETAILS'] = json_encode($res_devices,JSON_PRETTY_PRINT);
+            $out['DETAILS'] = json_encode($res_devices,JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
         }
 
     }
@@ -491,7 +491,7 @@ class zigbeedev extends module
             if ($data[0] == "{")
                 $json = "{\"$property\":$data}";
             else
-                $json = json_encode(array($property => $data));
+                $json = json_encode(array($property => $data),JSON_NUMERIC_CHECK);
             $this->mqttPublish($device_rec['FULL_PATH'] . '/set', $json);
         }
     }
@@ -604,7 +604,7 @@ class zigbeedev extends module
                 $properties[$property['TITLE']] = $property;
             }
             foreach ($ar as $k => $v) {
-                if (is_array($v)) $v = json_encode($v);
+                if (is_array($v)) $v = json_encode($v,JSON_NUMERIC_CHECK);
                 if ($k == 'action') {
                     $this->processData($device, 'action:' . $v, date('Y-m-d H:i:s'), $properties);
                 }
@@ -722,7 +722,7 @@ class zigbeedev extends module
             $data['r'] = $retain;
         }
         //DebMes("Publishing to $topic: $value",'zigbeedev_publish');
-        addToOperationsQueue('zigbeedev_queue', $topic, json_encode($data), true);
+        addToOperationsQueue('zigbeedev_queue', $topic, json_encode($data,JSON_NUMERIC_CHECK), true);
         return 1;
 
         /*
