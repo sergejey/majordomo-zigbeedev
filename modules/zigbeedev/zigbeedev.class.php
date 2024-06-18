@@ -590,6 +590,9 @@ class zigbeedev extends module
                     if (!$dev['ID']) {
                         $dev['IEEEADDR'] = $ar['meta']['ieeeAddr'];
                         $dev['TITLE'] = $friendly_name;
+                        if ($dev['TITLE'] == '' && $dev['IEEEADDR']) {
+                            $dev['TITLE'] = $dev['IEEEADDR'];
+                        }
                         $dev['UPDATED'] = date('Y-m-d H:i:s');
                         SQLInsert('zigbeedevices', $dev);
                     } elseif ($dev['ID'] && $dev['TITLE'] != $friendly_name) {
@@ -631,7 +634,7 @@ class zigbeedev extends module
             $rec['IEEEADDR'] = $ieeeAddr;
             $rec['TITLE'] = $device_data['friendly_name'];
             if (!$rec['TITLE']) {
-                $rec['TITLE'] = $rec['IEADDR'];
+                $rec['TITLE'] = $rec['IEEEADDR'];
             }
             $rec['FULL_PATH'] = $device_data['path'];
             $rec['MANUFACTURER_ID'] = '' . ($device_data['manufacturerID'] ? $device_data['manufacturerID'] : $device_data['manufacturer']);

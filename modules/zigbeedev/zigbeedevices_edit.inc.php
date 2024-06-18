@@ -13,6 +13,9 @@ if ($this->mode == 'update') {
     if ($this->tab == '') {
         //updating '<%LANG_TITLE%>' (varchar, required)
         //$rec['TITLE']=gr('title');
+        if ($rec['TITLE'] == '' && $rec['IEEEADDR']) {
+            $rec['TITLE'] = $rec['IEEEADDR'];
+        }
         if ($rec['TITLE'] == '') {
             $out['ERR_TITLE'] = 1;
             $ok = 0;
@@ -136,7 +139,7 @@ if ($this->tab == 'data') {
     $out['PROPERTIES'] = $properties;
     if (gr('ajax')) {
         header("Content-type:application/json");
-        echo json_encode($properties,JSON_NUMERIC_CHECK);
+        echo json_encode($properties, JSON_NUMERIC_CHECK);
         exit;
     }
 }
