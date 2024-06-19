@@ -38,16 +38,16 @@ $sort_type=gr('sort_type');
 if ($sort_type) {
     setcookie('zigbeedev_sort_type',$sort_type);
 } else {
-    $sort_type = $_COOKIE['zigbeedev_sort_type'];
+    $sort_type = isset($_COOKIE['zigbeedev_sort_type']) ? $_COOKIE['zigbeedev_sort_type'] : 'title';
 }
-if (!$sort_type) $sort_type='title';
+
 $out['SORT_TYPE']=$sort_type;
 
 $sort_dir=gr('sort_dir');
 if ($sort_dir) {
     setcookie('zigbeedev_sort_dir',$sort_dir);
 } else {
-    $sort_dir = $_COOKIE['zigbeedev_sort_dir'];
+    $sort_dir = isset($_COOKIE['zigbeedev_sort_dir']) ? $_COOKIE['zigbeedev_sort_dir'] : '';
 }
 $out['SORT_DIR']=$sort_dir;
 
@@ -76,6 +76,7 @@ if ($res[0]['ID']) {
         // some action for every record if required
         $data = SQLSelect("SELECT * FROM zigbeeproperties WHERE DEVICE_ID=" . $res[$i]['ID'] . " AND LINKED_OBJECT!=''");
         foreach ($data as $d) {
+            $res[$i]['DATA'] = "";			 
             $res[$i]['DATA'] .= '<b>' . $d['TITLE'] . '</b>';
             if ($d['LINKED_OBJECT']) {
                 $dev_rec = SQLSelectOne("SELECT ID, TITLE FROM devices WHERE LINKED_OBJECT='" . $d['LINKED_OBJECT'] . "'");
