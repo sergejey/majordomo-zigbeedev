@@ -148,7 +148,7 @@ class zigbeedev extends module
         $out['MQTT_PASSWORD'] = $this->config['MQTT_PASSWORD'];
         $out['MQTT_AUTH'] = $this->config['MQTT_AUTH'];
         $out['DEBUG_MODE'] = $this->config['DEBUG_MODE'];
-        $out['CREATE_DEVICES_AUTOMATICALLY'] = $this->config['CREATE_DEVICES_AUTOMATICALLY'];
+        $out['CREATE_DEVICES_AUTOMATICALLY'] = isset($this->config['CREATE_DEVICES_AUTOMATICALLY']) ? $this->config['CREATE_DEVICES_AUTOMATICALLY'] : false;
 
         if ($this->view_mode == 'update_settings') {
             $this->config['MQTT_HOST'] = gr('mqtt_host', 'trim');
@@ -164,7 +164,7 @@ class zigbeedev extends module
             $this->redirect("?");
         }
 
-        if (isset($this->data_source) && !$_GET['data_source'] && !$_POST['data_source']) {
+        if (isset($this->data_source) && !isset($_GET['data_source']) && !isset($_POST['data_source'])) { //не понимаю, что в последних двух условиях, но они генерят ошибки, т.к. остутствуют
             $out['SET_DATASOURCE'] = 1;
         }
         if ($this->data_source == 'zigbeedevices' || $this->data_source == '') {
@@ -179,9 +179,7 @@ class zigbeedev extends module
                 $this->redirect("?data_source=zigbeedevices");
             }
         }
-        if (isset($this->data_source) && !$_GET['data_source'] && !$_POST['data_source']) {
-            $out['SET_DATASOURCE'] = 1;
-        }
+
         if ($this->data_source == 'zigbeeproperties') {
             if ($this->view_mode == '' || $this->view_mode == 'search_zigbeeproperties') {
                 $this->search_zigbeeproperties($out);
@@ -300,7 +298,7 @@ class zigbeedev extends module
         if ($_REQUEST['topic']) {
             $this->processMessage($_REQUEST['topic'], $_REQUEST['did'], $_REQUEST['msg'], $_REQUEST['hub']);
         }
-        if ($params['publish']) {
+        if (isset($params['publish'])) {
             $this->mqttPublish($params['publish'], $params['msg']);
         }
     }
