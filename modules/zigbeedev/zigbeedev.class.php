@@ -561,7 +561,7 @@ class zigbeedev extends module
 
         if (preg_match('/^{/', $value)) {
             $ar = json_decode($value, true);
-            if ($hub && $ar['type'] == 'devices' && is_array($ar['message'])) {
+            if ($hub && !empty($ar['type']) && $ar['type'] == 'devices' && is_array($ar['message'])) {
                 $path = preg_replace('/bridge.+/', '', $path);
                 if ($this->config['DEBUG_MODE']) {
                     DebMes($value, 'zigbeedev_devices');
@@ -569,7 +569,7 @@ class zigbeedev extends module
                 $this->processListOfDevices($path, $ar['message']);
                 return;
             }
-            if ($hub && is_string($ar['devices']) && !empty($ar['devices'])) {
+            if ($hub && !empty($ar['devices']) && is_string($ar['devices'])) {
                 $path = preg_replace('/bridge.+/', '', $path);
                 $devices = json_decode($ar['devices'], true);
                 if ($this->config['DEBUG_MODE']) {
@@ -578,7 +578,7 @@ class zigbeedev extends module
                 $this->processListOfDevices($path, $devices);
                 return;
             }
-            if ($hub && $ar['type'] == 'device_announce' && is_array($ar['meta'])) {
+            if ($hub && !empty($ar['type']) && $ar['type'] == 'device_announce' && is_array($ar['meta'])) {
                 if ($ar['meta']['ieeeAddr']) {
                     $friendly_name = $ar['meta']['friendly_name'];
                     if (!$friendly_name) {
