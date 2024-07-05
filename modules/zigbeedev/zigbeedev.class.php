@@ -660,7 +660,10 @@ class zigbeedev extends module
 
     function processData(&$device, $prop, $value, $properties='')
     {
-        $property = $properties[$prop];
+        if($properties != ''){
+			if(isset($properties['TITLE']) && $properties['TITLE'] == $prop) $property = $properties;
+			else $property = $properties[$prop];
+		}
         if (!isset($property['ID'])) {
             $property = array('TITLE' => $prop, 'DEVICE_ID' => $device['ID']);
         }

@@ -108,7 +108,7 @@ if ($this->tab == 'data') {
             if ($this->mode == 'set') {
                 $new_value = gr('value');
                 $this->setDeviceData($properties[$i]['DEVICE_ID'], $properties[$i]['TITLE'], $new_value);
-                $this->processData($rec, $properties[$i]['TITLE'], $new_value);
+                $this->processData($rec, $properties[$i]['TITLE'], $new_value, $properties[$i]);
             }
             if ($this->mode == 'update') {
 
