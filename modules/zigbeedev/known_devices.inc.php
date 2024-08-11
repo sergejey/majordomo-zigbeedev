@@ -142,11 +142,12 @@ $models = array(
             ),
             'settings' => array(
                 'minWork' => 0,
-                'minWork' => 254,
+                'maxWork' => 254,
                 'setMaxTurnOn' => 1,
             )
         )
     ),
+    'LED2103G5' => 'LED2002G5',
     'LED1837R5' => 'LED2002G5',                       // TRADFRI bulb GU10 WW 400lm
     'LED1836G9' => 'LED2002G5',                       // TRADFRI bulb E27 WW 806lm
 
