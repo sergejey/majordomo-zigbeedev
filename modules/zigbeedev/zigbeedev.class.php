@@ -708,10 +708,13 @@ class zigbeedev extends module
                 }
             }
         }
-        if ($prop == 'battery' && $device['BATTERY_LEVEL'] != $value) {
-            $device['IS_BATTERY'] = 1;
-            $device['BATTERY_LEVEL'] = $value;
-            SQLUpdate('zigbeedevices', $device);
+        if ($prop == 'battery'){
+            if ($value == '') $value = 0;
+            if ($device['BATTERY_LEVEL'] != $value) {
+                $device['IS_BATTERY'] = 1;
+                $device['BATTERY_LEVEL'] = $value;
+                SQLUpdate('zigbeedevices', $device);
+            }
         }
 
     }
