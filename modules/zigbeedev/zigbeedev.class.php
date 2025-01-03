@@ -538,6 +538,7 @@ class zigbeedev extends module
         if (preg_match('/\#$/', $path)) {
             return 0;
         }
+        startMeasure('zd_processMessage');
 
         $device = SQLSelectOne("SELECT * FROM zigbeedevices WHERE TITLE='" . DBSafe($did) . "'");
         if (!$device['ID']) {
@@ -566,6 +567,7 @@ class zigbeedev extends module
                 if ($this->config['DEBUG_MODE']) {
                     DebMes($value, 'zigbeedev_devices');
                 }
+                endMeasure('zd_processMessage');
                 $this->processListOfDevices($path, $ar['message']);
                 return;
             }
@@ -575,6 +577,7 @@ class zigbeedev extends module
                 if ($this->config['DEBUG_MODE']) {
                     DebMes($ar['devices'], 'zigbeedev_devices');
                 }
+                endMeasure('zd_processMessage');
                 $this->processListOfDevices($path, $devices);
                 return;
             }
@@ -612,10 +615,12 @@ class zigbeedev extends module
                 $this->processData($device, $k, $v, $properties);
             }
         }
+        endMeasure('zd_processMessage');
     }
 
     function processListOfDevices($path, $data)
     {
+        startMeasure('zd_processListOfDevices');
         $total_devices = count($data);
         for ($i = 0; $i < $total_devices; $i++) {
             $device_data = $data[$i];
@@ -656,10 +661,12 @@ class zigbeedev extends module
                 SQLUpdate('zigbeedevices', $rec);
             }
         }
+        endMeasure('zd_processListOfDevices');
     }
 
     function processData(&$device, $prop, $value, $properties='')
     {
+        startMeasure('zd_processData');
         if($properties != ''){
 			if(isset($properties['TITLE']) && $properties['TITLE'] == $prop) $property = $properties;
 			else $property = $properties[$prop];
@@ -716,7 +723,7 @@ class zigbeedev extends module
                 SQLUpdate('zigbeedevices', $device);
             }
         }
-
+        endMeasure('zd_processData');
     }
 
     function mqttPublish($topic, $value, $qos = 0, $retain = 0)
