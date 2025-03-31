@@ -534,7 +534,6 @@ class zigbeedev extends module
 
     function processMessage($path, $did, $value, $hub)
     {
-
         if (preg_match('/\#$/', $path)) {
             return 0;
         }
@@ -581,7 +580,7 @@ class zigbeedev extends module
                 $this->processListOfDevices($path, $devices);
                 return;
             }
-            if ($hub && !empty($ar['type']) && $ar['type'] == 'device_announce' && is_array($ar['meta'])) {
+            if ($hub && !empty($ar['type']) && $ar['type'] == 'device_announce' && isset($ar['meta']) && is_array($ar['meta'])) {
                 if ($ar['meta']['ieeeAddr']) {
                     $friendly_name = $ar['meta']['friendly_name'];
                     if (!$friendly_name) {
@@ -606,6 +605,10 @@ class zigbeedev extends module
             $prop = SQLSelect("SELECT * FROM zigbeeproperties WHERE DEVICE_ID=" . $device['ID']);
             foreach($prop as $property){
                 $properties[$property['TITLE']] = $property;
+            }
+            if(preg_match('/availability/', $path)){
+                $ar['availability'] = $ar['state'];
+                unset($ar['state']);
             }
             foreach ($ar as $k => $v) {
                 if (is_array($v)) $v = json_encode($v,JSON_NUMERIC_CHECK);
@@ -640,11 +643,11 @@ class zigbeedev extends module
                 $rec['TITLE'] = $rec['IEEEADDR'];
             }
             $rec['FULL_PATH'] = $device_data['path'];
-            $rec['MANUFACTURER_ID'] = '' . (isset($device_data['manufacturerID']) ? $device_data['manufacturerID'] : $device_data['manufacturer']);
-            $rec['MODEL'] = '' . (isset($device_data['model']) ? $device_data['model'] : $device_data['definition']['model']);
-            $rec['MODEL_NAME'] = '' . (isset($device_data['modelID']) ? $device_data['modelID'] : $device_data['model_id']);
-            $rec['MODEL_DESCRIPTION'] = '' . (isset($device_data['description']) ? $device_data['description'] : $device_data['definition']['description']);
-            $rec['VENDOR'] = '' . (isset($device_data['vendor']) ? $device_data['vendor'] : $device_data['definition']['vendor']);
+            $rec['MANUFACTURER_ID'] = '' . (isset($device_data['manufacturerID']) ? $device_data['manufacturerID'] : (isset($device_data['manufacturer']) ? $device_data['manufacturer'] : ''));
+            $rec['MODEL'] = '' . (isset($device_data['model']) ? $device_data['model'] : (isset($device_data['definition']['model']) ? $device_data['definition']['model'] : ''));
+            $rec['MODEL_NAME'] = '' . (isset($device_data['modelID']) ? $device_data['modelID'] : (isset($device_data['model_id']) ? $device_data['model_id'] : ''));
+            $rec['MODEL_DESCRIPTION'] = '' . (isset($device_data['description']) ? $device_data['description'] : (isset($device_data['definition']['description']) ? $device_data['definition']['description'] : ''));
+            $rec['VENDOR'] = '' . (isset($device_data['vendor']) ? $device_data['vendor'] : (isset($device_data['definition']['vendor']) ? $device_data['definition']['vendor'] : ''));
             if (!$rec['DESCRIPTION'] || preg_match('/^\-/', trim($rec['DESCRIPTION']))) {
                 $rec['DESCRIPTION'] = $rec['MODEL_DESCRIPTION'] . ' - ' . $rec['TITLE'];
             }
