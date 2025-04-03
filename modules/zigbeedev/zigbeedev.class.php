@@ -606,7 +606,7 @@ class zigbeedev extends module
             foreach($prop as $property){
                 $properties[$property['TITLE']] = $property;
             }
-            if(preg_match('/availability/', $path)){
+            if(preg_match('/availability/', $path) && isset($ar['state'])){
                 $ar['availability'] = $ar['state'];
                 unset($ar['state']);
             }
