@@ -73,6 +73,7 @@ div.hint {
      [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]
      [#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
      [#if READ_ONLY=="1"#]<div class="hint" title="<#LANG_READ_ONLY#>">[r]</div>[#endif#]
+     [#if INVERT=="1"#]<div class="hint" title="<#LANG_DEVICES_LINK_THERMOSTAT_INVERT#>">[i]</div>[#endif#]
      [#if PROCESS_TYPE=="1"#]<div class="hint" title="<#LANG_ZIGBEEDEV_PROCESS_TYPE_ANY#>">[a]</div>[#endif#]
     </td>
     <td id="prop[#ID#]_updated" nowrap>[#UPDATED#]</td>
@@ -154,6 +155,8 @@ div.hint {
     <div class="controls">
       <input type="checkbox" id="read_only" name="read_only" value="1" [#if PROP_READ_ONLY="1"#] checked[#endif#]>
         <label for="read_only"><#LANG_READ_ONLY#></label>
+      <input type="checkbox" id="invert" name="invert" value="1" [#if PROP_INVERT="1"#] checked[#endif#]>
+        <label for="invert"><#LANG_DEVICES_LINK_THERMOSTAT_INVERT#></label>
     </div>
    </div>
 

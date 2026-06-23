@@ -1,6 +1,6 @@
 <?php
 /*
-* @version 0.1 (wizard)
+* @version 0.1a (wizard)
 */
 if ($this->owner->name == 'panel') {
     $out['CONTROLPANEL'] = 1;
@@ -119,6 +119,7 @@ if ($this->tab == 'data') {
                 $properties[$i]['LINKED_PROPERTY'] = gr('linked_property', 'trim');
                 $properties[$i]['LINKED_METHOD'] = gr('linked_method', 'trim');
                 $properties[$i]['READ_ONLY'] = gr('read_only', 'trim');
+                $properties[$i]['INVERT'] = gr('invert', 'trim');
                 $properties[$i]['PROCESS_TYPE'] = gr('process_type', 'int');
                 SQLUpdate('zigbeeproperties', $properties[$i]);
 

@@ -4,7 +4,7 @@
  * @package project
  * @author Wizard <sergejey@gmail.com>
  * @copyright http://majordomo.smartliving.ru/ (c)
- * @version 0.1 (wizard, 18:09:32 [Sep 17, 2021])
+ * @version 0.1a (wizard, 18:09:32 [Sep 17, 2021])
  */
 //
 //
@@ -504,19 +504,19 @@ class zigbeedev extends module
                 $old_value = $properties[$i]['VALUE'];
                 $new_value = $value;
                 if ($old_value == 'true' || $old_value == 'false') {
-                    if ($value) {
+                    if ($value xor $properties[$i]['INVERT']) {
                         $new_value = true;
                     } else {
                         $new_value = false;
                     }
                 } elseif ($old_value == 'ON' || $old_value == 'OFF') {
-                    if ($value) {
+                    if ($value xor $properties[$i]['INVERT']) {
                         $new_value = 'ON';
                     } else {
                         $new_value = 'OFF';
                     }
                 } elseif ($old_value == 'CLOSE' || $old_value == 'OPEN') {
-                    if ($value) {
+                    if ($value xor $properties[$i]['INVERT']) {
                         $new_value = 'CLOSE';
                     } else {
                         $new_value = 'OPEN';
@@ -700,9 +700,9 @@ class zigbeedev extends module
 
             $value = strtolower($value);
             if ($value == 'false' || $value == 'off' || $value == 'no' || $value == 'open' || $value == 'offline') {
-                $new_value = 0;
+                $new_value = 0 xor $property['INVERT'];
             } elseif ($value == 'true' || $value == 'on' || $value == 'yes' || $value == 'close' || $value == 'online') {
-                $new_value = 1;
+                $new_value = 1 xor $property['INVERT'];
             } else {
                 $new_value = $value;
             }
@@ -845,6 +845,7 @@ class zigbeedev extends module
  zigbeeproperties: LINKED_PROPERTY varchar(100) NOT NULL DEFAULT ''
  zigbeeproperties: LINKED_METHOD varchar(100) NOT NULL DEFAULT ''
  zigbeeproperties: READ_ONLY varchar(1) NOT NULL DEFAULT ''
+ zigbeeproperties: INVERT varchar(1) NOT NULL DEFAULT ''
  zigbeeproperties: PROCESS_TYPE int(3) NOT NULL DEFAULT '0'
  zigbeeproperties: UPDATED datetime
 EOD;
