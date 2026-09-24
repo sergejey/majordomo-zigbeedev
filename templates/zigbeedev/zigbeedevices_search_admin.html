@@ -63,7 +63,7 @@
 <tr>
  <td style="vertical-align:middle">
   [#if MODEL!=""#]<a href="https://www.zigbee2mqtt.io/devices/[#MODEL#].html" target="_blank">[#endif#]
-   <img src="https://www.zigbee2mqtt.io/images/devices/[#MODEL_IMAGE#].jpg" height="30px" onerror="this.src='../img/modules/zigbeedev.png'" style="mix-blend-mode: multiply;">
+   <img src="https://www.zigbee2mqtt.io/images/devices/[#MODEL_IMAGE#].png" height="30px" onerror="(function(i,f){i.onerror=null;var p=i.src.replace(/\.jpg$/i,'.png');i.src=p;i.addEventListener('error',function(){i.src=f;i.onerror=null}, {once:true})})(this,'../img/modules/zigbeedev.png')" style="mix-blend-mode: multiply;">
    </a>
  </td>
  <td>

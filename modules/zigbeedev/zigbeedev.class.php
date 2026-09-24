@@ -546,6 +546,11 @@ class zigbeedev extends module
             if (preg_match('/\/([^\\/]+?)$/', $path, $m) && isset($ar[$m[1]])) {
                 $path = str_replace($m[0],'',$path);
             }
+			//если топик availibility, то меняем state на availibility
+			if (preg_match('/\/availability$/', $path) && isset($ar['state'])){
+				$ar['availability'] = $ar['state'];
+				unset($ar['state']);
+			}
         } else {
             $ar = false;
         }
@@ -649,11 +654,12 @@ class zigbeedev extends module
                 $rec['TITLE'] = $rec['IEEEADDR'];
             }
             $rec['FULL_PATH'] = $device_data['path'];
-            $rec['MANUFACTURER_ID'] = '' . (isset($device_data['manufacturerID']) ? $device_data['manufacturerID'] : $device_data['manufacturer']);
-            $rec['MODEL'] = '' . (isset($device_data['model']) ? $device_data['model'] : $device_data['definition']['model']);
-            $rec['MODEL_NAME'] = '' . (isset($device_data['modelID']) ? $device_data['modelID'] : $device_data['model_id']);
-            $rec['MODEL_DESCRIPTION'] = '' . (isset($device_data['description']) ? $device_data['description'] : $device_data['definition']['description']);
-            $rec['VENDOR'] = '' . (isset($device_data['vendor']) ? $device_data['vendor'] : $device_data['definition']['vendor']);
+			//бывают несуществующие ключи, что генерит ошибки
+            $rec['MANUFACTURER_ID'] = '' . (isset($device_data['manufacturerID']) ? $device_data['manufacturerID'] : (isset($device_data['manufacturer']) ? $device_data['manufacturer'] : ''));
+            $rec['MODEL'] = '' . (isset($device_data['model']) ? $device_data['model'] : (isset($device_data['definition']['model']) ? $device_data['definition']['model'] : ''));
+            $rec['MODEL_NAME'] = '' . (isset($device_data['modelID']) ? $device_data['modelID'] : (isset($device_data['model_id']) ? $device_data['model_id'] : ''));
+            $rec['MODEL_DESCRIPTION'] = '' . (isset($device_data['description']) ? $device_data['description'] : (isset($device_data['definition']['description']) ? $device_data['definition']['description'] : ''));
+            $rec['VENDOR'] = '' . (isset($device_data['vendor']) ? $device_data['vendor'] : (isset($device_data['definition']['vendor']) ? $device_data['definition']['vendor'] : ''));
             if (!$rec['DESCRIPTION'] || preg_match('/^\-/', trim($rec['DESCRIPTION']))) {
                 $rec['DESCRIPTION'] = $rec['MODEL_DESCRIPTION'] . ' - ' . $rec['TITLE'];
             }
