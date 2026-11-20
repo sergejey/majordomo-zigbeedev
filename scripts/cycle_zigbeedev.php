@@ -119,7 +119,7 @@ function procmsg($topic, $msg) {
         DebMes("$topic :\n$msg", 'zigbeedev');
     }
 
-    if (preg_match('/\/set$/',$topic)) return;
+    if (preg_match('/\/(set|get)$/',$topic)) return;
 
     if (!preg_match('/bridge\//',$topic)) {
         global $topics;
