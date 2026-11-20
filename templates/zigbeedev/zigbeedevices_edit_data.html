@@ -45,6 +45,8 @@ div.hint {
      $('#prop'+data[i].ID+'_updated').html(data[i].UPDATED);
     }
    }
+  }).always(function() {
+   // keep polling even if a request has failed
    deviceTimer=setTimeout('reloadDeviceData();',2000);
   });
  }
@@ -55,7 +57,8 @@ div.hint {
 
 <div class="row">
  <div class="col-md-8">
-  <table class="table table-stripped">
+  <div class="table-responsive">
+  <table class="table table-striped">
    <tr>
     <th><#LANG_TITLE#></th>
     <th><#LANG_VALUE#></th>
@@ -67,11 +70,9 @@ div.hint {
    <tr[#if ID="<#PROP_ID#>"#] class="alert alert-success"[#endif#]>
     <td><a href="?id=<#ID#>&view_mode=<#VIEW_MODE#>&tab=<#TAB#>&prop_id=[#ID#]"><b>[#TITLE#]</b></a></td>
     <td id="prop[#ID#]_value">[#VALUE#]</td>
-    <td><a href="#" onclick="return setNewData([#ID#]);"><span class="glyphicon glyphicon-edit"></span></a></td>
+    <td><a href="#" onclick="return setNewData([#ID#]);" title="<#LANG_ZIGBEEDEV_SET_VALUE#>" aria-label="<#LANG_ZIGBEEDEV_SET_VALUE#>"><span class="glyphicon glyphicon-edit"></span></a></td>
     <td>
-     [#if LINKED_OBJECT!=""#][#LINKED_OBJECT#][#endif#]
-     [#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#]
-     [#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
+     [#if LINKED_OBJECT!=""#][#LINKED_OBJECT#][#endif#][#if LINKED_PROPERTY!=""#].[#LINKED_PROPERTY#][#endif#][#if LINKED_METHOD!=""#] &gt; [#LINKED_METHOD#][#endif#]
      [#if READ_ONLY=="1"#]<div class="hint" title="<#LANG_READ_ONLY#>">[r]</div>[#endif#]
      [#if PROCESS_TYPE=="1"#]<div class="hint" title="<#LANG_ZIGBEEDEV_PROCESS_TYPE_ANY#>">[a]</div>[#endif#]
     </td>
@@ -79,6 +80,7 @@ div.hint {
    </tr>
    [#end PROPERTIES#]
   </table>
+  </div>
  </div>
  <div class="col-md-4">
 
@@ -122,19 +124,19 @@ div.hint {
   <form class="form" action="?" method="post">
    <h4>[#PROP_TITLE#]</h4>
    <div class="form-group">
-    <label><#LANG_LINKED_OBJECT#>:</label>
+    <label for="linked_object"><#LANG_LINKED_OBJECT#>:</label>
     <div>
     <input type="text" id="linked_object" name="linked_object" class="form-control" value="[#PROP_LINKED_OBJECT#]">
     </div>
    </div>
    <div class="form-group">
-    <label><#LANG_PROPERTY#>:</label>
+    <label for="linked_property"><#LANG_PROPERTY#>:</label>
     <div>
     <input type="text" id="linked_property" name="linked_property" class="form-control" value="[#PROP_LINKED_PROPERTY#]">
     </div>
    </div>
    <div class="form-group">
-    <label><#LANG_METHOD#>:</label>
+    <label for="linked_method"><#LANG_METHOD#>:</label>
     <div>
     <input type="text" id="linked_method" name="linked_method" class="form-control" value="[#PROP_LINKED_METHOD#]">
     </div>
