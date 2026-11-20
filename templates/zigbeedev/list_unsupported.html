@@ -3,13 +3,13 @@
 </p>
 [#if DETAILS!=""#]
 <p>
-    Support of some devices can be improved and you can help by sending details below to the author
-    (<a href="https://github.com/sergejey/majordomo-zigbeedev" target="_blank">GitHub</a>,
-    <a href="https://t.me/MajorDoMoRu" target="_blank">Telegram</a>).<br>
+    <#LANG_ZIGBEEDEV_UNSUPPORTED_INFO#>
+    (<a href="https://github.com/sergejey/majordomo-zigbeedev" target="_blank" rel="noopener">GitHub</a>,
+    <a href="https://t.me/MajorDoMoRu" target="_blank" rel="noopener">Telegram</a>).<br>
 </p>
-<p>    Hit below to copy data.</p>
+<p><#LANG_ZIGBEEDEV_UNSUPPORTED_COPY#> <span id="zigbeedev_copied" class="text-success" style="display:none"><#LANG_ZIGBEEDEV_COPIED#></span></p>
 
-<textarea class="form-control" rows="10" onclick="this.focus();this.select();document.execCommand('copy');alert('Text copied to clipboard.');" readonly="true">[#DETAILS#]</textarea>
+<textarea class="form-control" rows="10" onclick="this.focus();this.select();if (document.execCommand('copy')) $('#zigbeedev_copied').show();" readonly>[#DETAILS#]</textarea>
 [#else DETAILS#]
-<div class="alert alert-success">All devices found should be fully supported.</div>
+<div class="alert alert-success"><#LANG_ZIGBEEDEV_ALL_SUPPORTED#></div>
 [#endif DETAILS#]

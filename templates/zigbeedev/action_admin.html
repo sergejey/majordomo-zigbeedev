@@ -23,66 +23,49 @@
 <div style="display:none" id='api_settings'>
 &nbsp;
 <form action="?" method="post" enctype="multipart/form-data" name="frmEdit" class="form">
-<div class="form-group[#if ERR_MQTT_HOST#] has-error[#endif#]">
- <label class="control-label">
- MQTT host:
- </label>
- <input type="text" name="mqtt_host" value="[#MQTT_HOST#]" class="form-control">
-</div>
-    <div class="form-group[#if ERR_MQTT_PORT#] has-error[#endif#]">
-        <label class="control-label">
-            MQTT port:
-        </label>
-        <input type="text" name="mqtt_port" value="[#MQTT_PORT#]" class="form-control">
-    </div>
-
-    <div class="form-group[#if ERR_MQTT_QUERY#] has-error[#endif#]">
-        <label class="control-label">
-            MQTT topics:
-        </label>
-        <input type="text" name="mqtt_query" value="[#MQTT_QUERY#]" class="form-control">
-        <div class="help-block">Use "," for multiple topics</div>
-    </div>
-    <div class="form-group>
-        <label class="control-label">
-            Authorization required:
-        </label>
-        <input type="radio" value="1" name="mqtt_auth" [#if MQTT_AUTH="1"#] checked[#endif#]> <#LANG_YES#>
-        <input type="radio" value="0" name="mqtt_auth" [#if MQTT_AUTH!="1"#] checked[#endif#]> <#LANG_NO#>
-    <br/>&nbsp;
-    </div>
-
 <div class="form-group">
-    <label class="control-label">
-        MQTT <#LANG_USERNAME#>:
-    </label>
-    <input type="text" name="mqtt_username" value="[#MQTT_USERNAME#]" class="form-control">
+ <label class="control-label" for="mqtt_host">MQTT host:</label>
+ <input type="text" id="mqtt_host" name="mqtt_host" value="[#MQTT_HOST#]" class="form-control">
 </div>
-
 <div class="form-group">
-    <label class="control-label">
-        MQTT <#LANG_PASSWORD#>:
-    </label>
-    <input type="password" name="mqtt_password" value="[#MQTT_PASSWORD#]" class="form-control">
+ <label class="control-label" for="mqtt_port">MQTT port:</label>
+ <input type="number" min="1" max="65535" id="mqtt_port" name="mqtt_port" value="[#MQTT_PORT#]" class="form-control">
 </div>
-
 <div class="form-group">
-    <label class="control-label">
-        Debug mode (extra logging):
-    </label>
-    <input type="radio" name="debug_mode" value="1"[#if DEBUG_MODE="1"#] checked[#endif#]> <#LANG_YES#>
-    <input type="radio" name="debug_mode" value="0"[#if DEBUG_MODE!="1"#] checked[#endif#]> <#LANG_NO#>
+ <label class="control-label" for="mqtt_query"><#LANG_ZIGBEEDEV_MQTT_TOPICS#>:</label>
+ <input type="text" id="mqtt_query" name="mqtt_query" value="[#MQTT_QUERY#]" class="form-control">
+ <div class="help-block"><#LANG_ZIGBEEDEV_MQTT_TOPICS_HINT#></div>
 </div>
-
 <div class="form-group">
-    <label class="control-label">
-        Create devices automatically (experimental!):
-    </label>
-    <input type="radio" name="create_devices_automatically" value="1"[#if CREATE_DEVICES_AUTOMATICALLY="1"#] checked[#endif#]> <#LANG_YES#>
-    <input type="radio" name="create_devices_automatically" value="0"[#if CREATE_DEVICES_AUTOMATICALLY!="1"#] checked[#endif#]> <#LANG_NO#>
-    (<a href="?view_mode=list_unsupported">check for unsupported devices</a>)
+ <label class="control-label"><#LANG_AUTHORIZATION_REQUIRED#>:</label>
+ <div>
+  <label class="radio-inline"><input type="radio" value="1" name="mqtt_auth"[#if MQTT_AUTH="1"#] checked[#endif#]> <#LANG_YES#></label>
+  <label class="radio-inline"><input type="radio" value="0" name="mqtt_auth"[#if MQTT_AUTH!="1"#] checked[#endif#]> <#LANG_NO#></label>
+ </div>
 </div>
-
+<div class="form-group">
+ <label class="control-label" for="mqtt_username">MQTT <#LANG_USERNAME#>:</label>
+ <input type="text" id="mqtt_username" name="mqtt_username" value="[#MQTT_USERNAME#]" class="form-control" autocomplete="off">
+</div>
+<div class="form-group">
+ <label class="control-label" for="mqtt_password">MQTT <#LANG_PASSWORD#>:</label>
+ <input type="password" id="mqtt_password" name="mqtt_password" value="[#MQTT_PASSWORD#]" class="form-control" autocomplete="new-password">
+</div>
+<div class="form-group">
+ <label class="control-label"><#LANG_ZIGBEEDEV_DEBUG_MODE#>:</label>
+ <div>
+  <label class="radio-inline"><input type="radio" name="debug_mode" value="1"[#if DEBUG_MODE="1"#] checked[#endif#]> <#LANG_YES#></label>
+  <label class="radio-inline"><input type="radio" name="debug_mode" value="0"[#if DEBUG_MODE!="1"#] checked[#endif#]> <#LANG_NO#></label>
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label"><#LANG_ZIGBEEDEV_AUTO_CREATE#>:</label>
+ <div>
+  <label class="radio-inline"><input type="radio" name="create_devices_automatically" value="1"[#if CREATE_DEVICES_AUTOMATICALLY="1"#] checked[#endif#]> <#LANG_YES#></label>
+  <label class="radio-inline"><input type="radio" name="create_devices_automatically" value="0"[#if CREATE_DEVICES_AUTOMATICALLY!="1"#] checked[#endif#]> <#LANG_NO#></label>
+  &nbsp; (<a href="?view_mode=list_unsupported"><#LANG_ZIGBEEDEV_CHECK_UNSUPPORTED#></a>)
+ </div>
+</div>
 <div class="form-group">
 <button type="submit" name="subm" value="Submit" class="btn btn-primary"><#LANG_UPDATE#></button>
 <input type="hidden" name="view_mode" value="update_settings">
