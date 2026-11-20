@@ -563,7 +563,7 @@ class zigbeedev extends module
             $device = array('TITLE' => $did, 'IEEEADDR' => $did);
             $device['UPDATED'] = date('Y-m-d H:i:s');
             $device['FULL_PATH'] = $path;
-            $device['FULL_PATH'] = preg_replace('/\/bridge.+/', '', $device['FULL_PATH']);
+            $device['FULL_PATH'] = preg_replace('/\/bridge.+|\/availability$/', '', $device['FULL_PATH']);
             if ($hub) {
                 $device['IS_HUB'] = 1;
             }
@@ -595,7 +595,7 @@ class zigbeedev extends module
                 $this->processListOfDevices($path, $devices);
                 return;
             }
-            if ($hub && !empty($ar['type']) && $ar['type'] == 'device_announce' && is_array($ar['meta'])) {
+            if ($hub && !empty($ar['type']) && $ar['type'] == 'device_announce' && isset($ar['meta']) && is_array($ar['meta'])) {
                 if ($ar['meta']['ieeeAddr']) {
                     $friendly_name = $ar['meta']['friendly_name'];
                     if (!$friendly_name) {
@@ -751,7 +751,8 @@ class zigbeedev extends module
             $data['r'] = $retain;
         }
         //DebMes("Publishing to $topic: $value",'zigbeedev_publish');
-        addToOperationsQueue('zigbeedev_queue', $topic, json_encode($data, JSON_NUMERIC_CHECK), true);
+        // not unique: consecutive commands to the same topic must all be delivered
+        addToOperationsQueue('zigbeedev_queue', $topic, json_encode($data, JSON_NUMERIC_CHECK));
         return 1;
     }
 
