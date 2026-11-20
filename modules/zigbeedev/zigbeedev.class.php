@@ -194,7 +194,8 @@ class zigbeedev extends module
         }
 
         if ($this->mode == 'refresh_devices') {
-            $this->refreshDevices();
+            // cycle re-subscribes and receives retained bridge/devices again
+            setGlobal('cycle_zigbeedevControl', 'restart');
             $this->redirect("?ok=1");
         }
 
@@ -266,8 +267,8 @@ class zigbeedev extends module
         for ($i = 0; $i < $total; $i++) {
             $topic = trim($query_list[$i]);
             $topic = preg_replace('/#$/', '', $topic);
+            // legacy API (Zigbee2MQTT < 2.0), newer versions publish retained bridge/devices
             $this->mqttPublish($topic . 'bridge/config/devices', '');
-            $this->mqttPublish($topic . 'bridge/request/restart', '');
         }
     }
 
@@ -577,7 +578,7 @@ class zigbeedev extends module
 
         if (is_array($ar)) {
             if ($hub && !empty($ar['type']) && $ar['type'] == 'devices' && is_array($ar['message'])) {
-                $path = preg_replace('/bridge.+/', '', $path);
+                $path = preg_replace('/bridge(\/.*)?$/', '', $path);
                 if ($this->config['DEBUG_MODE']) {
                     DebMes($value, 'zigbeedev_devices');
                 }
@@ -586,7 +587,7 @@ class zigbeedev extends module
                 return;
             }
             if ($hub && !empty($ar['devices']) && is_string($ar['devices'])) {
-                $path = preg_replace('/bridge.+/', '', $path);
+                $path = preg_replace('/bridge(\/.*)?$/', '', $path);
                 $devices = json_decode($ar['devices'], true);
                 if ($this->config['DEBUG_MODE']) {
                     DebMes($ar['devices'], 'zigbeedev_devices');
