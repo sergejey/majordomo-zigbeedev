@@ -21,58 +21,57 @@
 <div class="form-group[#if ERR_TITLE#] has-error[#endif#]">
  <label for="title" class="col-lg-3 control-label">
  <#LANG_TITLE#>:
- (*)
  </label>
- <div class="col-lg-9"><input id="title" name="title" value="[#TITLE#]" type="text" disabled class="form-control"></div>
+ <div class="col-lg-9"><input id="title" name="title" value="[#TITLE#]" type="text" readonly class="form-control"></div>
 </div>
 <!-- IEEEADDR (varchar) -->
 <div class="form-group[#if ERR_IEEEADDR#] has-error[#endif#]">
  <label for="ieeeaddr" class="col-lg-3 control-label">
  IEEEADDR:
  </label>
- <div class="col-lg-9"><input id="ieeeaddr" name="ieeeaddr" value="[#IEEEADDR#]" disabled type="text" class="form-control"></div>
+ <div class="col-lg-9"><input id="ieeeaddr" name="ieeeaddr" value="[#IEEEADDR#]" readonly type="text" class="form-control"></div>
 </div>
 
  <div class="form-group">
-  <label class="col-lg-3 control-label">
-   Model name:
+  <label for="model_name" class="col-lg-3 control-label">
+   <#LANG_ZIGBEEDEV_MODEL_NAME#>:
   </label>
-  <div class="col-lg-9"><input value="[#MODEL_NAME#]" disabled type="text" class="form-control"></div>
+  <div class="col-lg-9"><input id="model_name" value="[#MODEL_NAME#]" readonly type="text" class="form-control"></div>
  </div>
 
  <div class="form-group">
-  <label class="col-lg-3 control-label">
-   Model Id:
+  <label for="model_id" class="col-lg-3 control-label">
+   <#LANG_ZIGBEEDEV_MODEL_ID#>:
   </label>
-  <div class="col-lg-9"><input value="[#MODEL#]" disabled type="text" class="form-control"></div>
+  <div class="col-lg-9"><input id="model_id" value="[#MODEL#]" readonly type="text" class="form-control"></div>
  </div>
 
  <div class="form-group">
-  <label class="col-lg-3 control-label">
-   Model description:
+  <label for="model_description" class="col-lg-3 control-label">
+   <#LANG_ZIGBEEDEV_MODEL_DESCRIPTION#>:
   </label>
-  <div class="col-lg-9"><input value="[#MODEL_DESCRIPTION#]" disabled type="text" class="form-control"></div>
+  <div class="col-lg-9"><input id="model_description" value="[#MODEL_DESCRIPTION#]" readonly type="text" class="form-control"></div>
  </div>
 
  <div class="form-group">
-  <label class="col-lg-3 control-label">
-   Manufacturer Id:
+  <label for="manufacturer_id" class="col-lg-3 control-label">
+   <#LANG_ZIGBEEDEV_MANUFACTURER#>:
   </label>
-  <div class="col-lg-9"><input value="[#MANUFACTURER_ID#]" disabled type="text" class="form-control"></div>
+  <div class="col-lg-9"><input id="manufacturer_id" value="[#MANUFACTURER_ID#]" readonly type="text" class="form-control"></div>
  </div>
 
  <div class="form-group">
-  <label class="col-lg-3 control-label">
-   Vendor:
+  <label for="vendor" class="col-lg-3 control-label">
+   <#LANG_ZIGBEEDEV_VENDOR#>:
   </label>
-  <div class="col-lg-9"><input value="[#VENDOR#]" disabled type="text" class="form-control"></div>
+  <div class="col-lg-9"><input id="vendor" value="[#VENDOR#]" readonly type="text" class="form-control"></div>
  </div>
 
  <div class="form-group">
   <label for="full_path" class="col-lg-3 control-label">
-   Topic:
+   <#LANG_ZIGBEEDEV_TOPIC#>:
   </label>
-  <div class="col-lg-9"><input id="full_path" name="full_path" value="[#FULL_PATH#]" disabled type="text" class="form-control"></div>
+  <div class="col-lg-9"><input id="full_path" name="full_path" value="[#FULL_PATH#]" readonly type="text" class="form-control"></div>
  </div>
 
 
