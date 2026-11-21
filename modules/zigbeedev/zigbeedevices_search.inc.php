@@ -75,8 +75,8 @@ if ($res[0]['ID']) {
     for ($i = 0; $i < $total; $i++) {
         // some action for every record if required
         $data = SQLSelect("SELECT * FROM zigbeeproperties WHERE DEVICE_ID=" . $res[$i]['ID'] . " AND LINKED_OBJECT!=''");
+        $res[$i]['DATA'] = "";
         foreach ($data as $d) {
-            $res[$i]['DATA'] = "";
             $res[$i]['DATA'] .= '<b>' . $d['TITLE'] . '</b>';
             if ($d['LINKED_OBJECT']) {
                 $dev_rec = SQLSelectOne("SELECT ID, TITLE FROM devices WHERE LINKED_OBJECT='" . $d['LINKED_OBJECT'] . "'");
@@ -102,9 +102,9 @@ if ($res[0]['ID']) {
             }
         }
         if ($res[$i]['MODEL']) {
-            $res[$i]['MODEL'] = str_replace('/', '-', $res[$i]['MODEL']);
-            $res[$i]['MODEL_IMAGE'] = str_replace(' ', '-', $res[$i]['MODEL']);
-            $res[$i]['MODEL'] = str_replace(' ', '_', $res[$i]['MODEL']);
+            // same naming rules as zigbee2mqtt.io: images use "-", device pages use "_"
+            $res[$i]['MODEL_IMAGE'] = preg_replace('/[\/: \']/', '-', $res[$i]['MODEL']);
+            $res[$i]['MODEL'] = preg_replace('/[\/: ]/', '_', $res[$i]['MODEL']);
         }
     }
     if (gr('ajax')) {
